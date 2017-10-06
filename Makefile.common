@@ -109,7 +109,7 @@ $(DRAFT)-diff.txt: $(DRAFT).txt
 
 idnits: $(DRAFT).txt
 	@if [ ! -f idnits ] ; then \
-		-rm -f $@ 					;\
+		rm -f $@ 					;\
 		wget http://tools.ietf.org/tools/idnits/idnits	;\
 		chmod 755 idnits				;\
 	fi
