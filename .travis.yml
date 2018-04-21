@@ -8,6 +8,5 @@ addons:
       - make
 install:
   - pip install -r requirements.txt
-  - git clone https://github.com/YangModels/yang.git ../yang
 script:
   - make idnits
