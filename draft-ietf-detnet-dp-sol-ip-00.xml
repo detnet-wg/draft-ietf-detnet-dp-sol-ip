@@ -768,7 +768,6 @@ DetNet                    |L2/SbN|          |L2/SbN|
      independent for PW/MPLS and IP encapsulated DetNet flows.
    </t>
    <t>
-       <t>
      DetNet flows transported via IP have more limited aggregation
      options, due to the available traffic flow identification fields of
      the IP solution. 
