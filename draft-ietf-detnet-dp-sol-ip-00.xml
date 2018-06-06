@@ -382,10 +382,10 @@ End System       Node            Node         Node        End System
 +-----+     _____    /        \       | Eth |
        \   /     \__/          \___   +-----+
         \ /                        \ /
-         0======== tunnel-1 ========0_
+         0========= flow-1 =========0_
          |                             \
           \                             |
-          0========= tunnel-2 =========0
+          0========== flow-2 ==========0
          / \                        __/ \
   +-----+   \__     DetNet domain  /     \
   |  X  |      \         __       /       +-----+
@@ -434,33 +434,6 @@ End System       Node            Node         Node        End System
 
           <t>DetNet Routing service provides routing, therefore available only for L3 hosts that are in different BC domains. Forwarding over the DetNet domain is based on L3 (IP) addresses (i.e. dst-IP).
           </t>
-
-          <section title="IP PSN with tunneling" anchor="iptunneling">
-            <t> In case of an IP PSN the same tunneling concept can be used as for an MPLS PSN, but the tunnel is constructed by a new IP header (and possible upper layer fields). The data-flow IP header MUST be preserved as-is.
-            </t>
-
-            <figure title="Tunneling based encapsulation format for DetNet Routing in IP PSN for L3 end-systems" anchor="fig_ip_DN_routing">
-              <artwork align="center"><![CDATA[
-           +------+                         +------+
-           |  X   |                         |  X   |
-           +======+                         +------+
-End-system |  IP  |                         |  IP  |
-      -----+------+-------+======+---     --+======+--
-DetNet                    |  IP  |          |  IP  |
-                          +------+          +------+
-                          |  L2  |          |  L2  |
-                          +------+          +------+
-                          ]]>
-            </artwork></figure>
-
-            <t>
-              DetNet IP header contains the IP addresses of the ingress/egress PE nodes of DetNet domain. The
-              End-system IP header contains the IP addresses of the end-systems. Therefore all DetNet specific
-              functions can be used.
-            </t>
-          </section>
-
-
           <section title="IP PSN with simplified IP Service" anchor="simplifiedip">
             <t>
               One may consider avoiding the additional IP encapsulation defined in the previous sub-chapter.
@@ -509,7 +482,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
         </section>
       </section>
 
-
+      <!--
       <section title="DetNet Routing Function (DN-RF)">
 
         <t>
@@ -517,7 +490,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
           Note: DN-RF are not considered for the simplified IP scenario. DN-IWF is more relevant for IP PSN
           with tunneling.
         </t>
-
+      -->
 
         <section title="Networks with multiple technology segments" anchor="nwsegments">
 
@@ -590,10 +563,10 @@ DetNet                    |L2/SbN|          |L2/SbN|
         </section>
 
 
+    <!--
       </section>
-
     </section>
-
+    -->
     <!-- ================================================================= -->
 
     <section title="Simplified IP related DetNet data plane solution" anchor="simple-ip-solution">
@@ -616,6 +589,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
         <xref target="simplifiedip"/> illustrated the case for DetNet simplified IP data plane solution.
       </t>
     </section>
+    </section>
 
 
     <!-- ================================================================= -->
@@ -625,6 +599,11 @@ DetNet                    |L2/SbN|          |L2/SbN|
       <t> NOTE: these sections are simple copy pasted from earlier document.
       They may not be needed.
       </t>
+      <section title="OAM">
+        <t>
+          [LB] This section is TBD
+        </t>
+      </section>
       <section title="Class of Service">
         <t> [JiK] this section is TBD
         </t>
@@ -786,44 +765,6 @@ DetNet                    |L2/SbN|          |L2/SbN|
         </t>
       </section>
 
-      <section title="Bidirectional traffic">
-        <t> [JiK] this is managed at the management plane or controller level.
-        </t>
-        <t>
-          Some DetNet applications generate bidirectional traffic.  Using MPLS
-          definitions <xref target="RFC5654"/> there are associated bidirectional flows, and co-routed bidirectional flows.
-          MPLS defines a point-to-point associated bidirectional LSP as
-          consisting of two unidirectional point-to-point LSPs, one from A to
-          B and the other from B to A, which are regarded as providing
-          a single logical bidirectional transport path.  This would be
-          analogous of standard IP routing, or PWs running over two reciprocal
-          unidirection LSPs.  MPLS defines a point-to-point co-routed
-          bidirectional LSP as an associated bidirectional LSP which satisfies
-          the additional constraint that its two unidirectional component
-          LSPs follow the same path (in terms of both nodes
-          and links) in both directions.  An important property of co-routed bidirectional LSPs
-          is that their unidirectional component LSPs share fate.  In both
-          types of bidirectional LSPs, resource allocations may differ in each
-          direction.  The concepts of associated bidirectional flows  and
-          co-routed bidirectional flows can be applied to DetNet flows as well
-          whether IPv6 or MPLS is used.
-        </t>
-        <t>
-          While the IPv6 and MPLS data planes must support bidirectional DetNet flows, there
-          are no special bidirectional features with respect to the data plane
-          other than need for the two directions take the same paths.
-          Fate sharing and associated vs co-routed bidirectional flows can be
-          managed at the control level.
-          Note,
-          that there is no stated requirement for bidirectional DetNet flows
-          to be supported using the same IPv6 Flow Labels or MPLS Labels in each direction.
-          Control mechanisms will need to support such bidirectional flows for
-          both IPv6 and MPLS, but such mechanisms are out of scope of this
-          document.  An example control plane solution for MPLS can be found
-          in <xref target="RFC7551"/>.
-        </t>
-      </section>
-
       <section title="Layer 2 addressing and QoS Considerations">
         <t> [JiK] combine this with the mapping section.
         </t>
@@ -853,21 +794,6 @@ DetNet                    |L2/SbN|          |L2/SbN|
           may also have to move sequence number fields among Layer 2, PW, and IPv6 encapsulations.
         </t>
       </section>
-      <section title="IPv4 considerations">
-        <t>
-          IPv4 and IPv6 will move under Section 6.
-        </t>
-        <t>
-          [Editor's note: The fact is that there are and will be deployments using IPv4. Neglecting it
-          entirely is not feasible.]
-        </t>
-      </section>
-      <section title="IPv6 considerations">
-        <t>
-          [Editor's note: Placeholder for IPv6 specific considerations (e.g., usage of Flow-label, etc.).]
-        </t>
-      </section>
-
     </section>
 
     <!-- ===================================================================== -->
@@ -965,6 +891,18 @@ DetNet                    |L2/SbN|          |L2/SbN|
     </section>
     <!-- ===================================================================== -->
 
+    <section title="Mapping IP DetNet Flows to MPLS">
+      <t>
+        [LB] is this already in (or belong in) <xref
+        target="I-D.ietf-detnet-dp-sol-mpls"/>?
+      </t>
+    </section>
+    <section title="Mapping IP DetNet Flows to IEEE 802.1 TSN">
+      <t>
+        [LB] This section is TBD
+      </t>
+    </section>
+
     <section title="Management and control plane considerations">
       <t>
         [Editor's note: This section needs to be different for MPLS and IP solutions. Most solutions
@@ -1031,6 +969,44 @@ DetNet                    |L2/SbN|          |L2/SbN|
           [TBD]
         </t>
       </section>
+      <section title="Bidirectional traffic">
+        <t> [JiK] this is managed at the management plane or controller level.
+        </t>
+        <t>
+          Some DetNet applications generate bidirectional traffic.  Using MPLS
+          definitions <xref target="RFC5654"/> there are associated bidirectional flows, and co-routed bidirectional flows.
+          MPLS defines a point-to-point associated bidirectional LSP as
+          consisting of two unidirectional point-to-point LSPs, one from A to
+          B and the other from B to A, which are regarded as providing
+          a single logical bidirectional transport path.  This would be
+          analogous of standard IP routing, or PWs running over two reciprocal
+          unidirection LSPs.  MPLS defines a point-to-point co-routed
+          bidirectional LSP as an associated bidirectional LSP which satisfies
+          the additional constraint that its two unidirectional component
+          LSPs follow the same path (in terms of both nodes
+          and links) in both directions.  An important property of co-routed bidirectional LSPs
+          is that their unidirectional component LSPs share fate.  In both
+          types of bidirectional LSPs, resource allocations may differ in each
+          direction.  The concepts of associated bidirectional flows  and
+          co-routed bidirectional flows can be applied to DetNet flows as well
+          whether IPv6 or MPLS is used.
+        </t>
+        <t>
+          While the IPv6 and MPLS data planes must support bidirectional DetNet flows, there
+          are no special bidirectional features with respect to the data plane
+          other than need for the two directions take the same paths.
+          Fate sharing and associated vs co-routed bidirectional flows can be
+          managed at the control level.
+          Note,
+          that there is no stated requirement for bidirectional DetNet flows
+          to be supported using the same IPv6 Flow Labels or MPLS Labels in each direction.
+          Control mechanisms will need to support such bidirectional flows for
+          both IPv6 and MPLS, but such mechanisms are out of scope of this
+          document.  An example control plane solution for MPLS can be found
+          in <xref target="RFC7551"/>.
+        </t>
+      </section>
+
     </section>
 
 
