@@ -178,7 +178,10 @@ End System       Node                         Node        End System
         traffic that is identified as DetNet flows, relay nodes
         understand the transport requirements of the DetNet flow and
         ensure that node, interface and sub-network resources are
-        allocated to ensure DetNet service requirements.  IEEE 802.1 TSN
+        allocated to ensure DetNet service requirements. The dotted line
+        around the Service component of the Relay Nodes indicates that
+        the transit routers are DetNet service aware but do not perform
+        any DetNet service layer function, e.g., PROEF. IEEE 802.1 TSN
         is an example sub-network type which can provide support for
         DetNet flows and service.  The mapping of IP DetNet flows to TSN
         streams and TSN protection mechanisms is expected to be defined
@@ -188,9 +191,6 @@ End System       Node                         Node        End System
       <figure align="center" anchor="fig_ip_detnet"
               title="DetNet IP Over MPLS Network">
         <artwork><![CDATA[
-NOTE: This figures is TBD
-[JiK] Adapt Figure for TSN case
-
 IP  DetNet       Edge           Transit       Edge        IP DetNet
 End System       Node            Node         Node        End System
                  (LER)           (LSR)        (LER)
@@ -214,9 +214,13 @@ End System       Node            Node         Node        End System
         encapsulated traffic that is identified as DetNet flows.  The
         edge node follow procedures defined in <xref
         target="I-D.ietf-detnet-dp-sol-mpls"/> to map each DetNet flow
-        to MPLS LSPs. While not shown, Edge nodes can provide service
+        to MPLS LSPs. While not shown, Edge Nodes can provide service
         layer functions such as PREF and PROEF over the MPLS transport
-        layer.
+        layer, and this is indicated by the solid line for the MPLS
+        facing portion of the Service component. Note that the Transit
+        node is MPLS (TE) LSP aware and performs switching based on MPLS
+        labels, and need not have any specific knowledge of the DetNet
+        service or the corresponding DetNet flow identification.
       </t>
 
       <section title="DetNet IP Flow Identification" anchor="sec:ipflow">
@@ -893,14 +897,39 @@ DetNet                    |L2/SbN|          |L2/SbN|
 
     <section title="Mapping IP DetNet Flows to MPLS">
       <t>
-        [LB] is this already in (or belong in) <xref
+        [LB] is this belongs in <xref
         target="I-D.ietf-detnet-dp-sol-mpls"/>?
       </t>
     </section>
     <section title="Mapping IP DetNet Flows to IEEE 802.1 TSN">
       <t>
-        [LB] This section is TBD
+        [LB] This section is TBD - it covers how IP DetNet flows operate
+        over an IEEE 802.1 TSN sub-network.
+        [BV to take a pass at filling in this section]
       </t>
+      <section title="TSN Stream ID Mapping">
+        <t>
+          [LB] This section covers the data plane aspects of mapping an
+          IP DetNet flow to one or more TSN Stream-IDs.
+        </t>
+      </section>
+      <section title="TSN Usage of FRER">
+        <t>
+          [Core point]TSN Streams support DetNet flows may use FRER
+          [802.1CB] based on the loss service requirements of the TSN
+          Stream, which is derived from the DetNet service requirements
+          of the DetNet mapped flow.  The specific operation of the FRER
+          is not modified by the use of DetNe and follows [802.1CB].
+        </t>
+      </section>
+      <section title="Management and Control Implications">
+        <t>
+          [LB] This section is TBD
+          Covers Creation, mapping, removal of TSN Stream IDs, related
+          parameters and,when needed, configuration of FRER. Supported
+          by management/control plane.
+        </t>
+      </section>
     </section>
 
     <section title="Management and control plane considerations">
