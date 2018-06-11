@@ -69,13 +69,12 @@
       </t>
       <t>
         This document specifies the DetNet data plane operation for IP
-        hosts and routers, which provide DetNet service to IP
-        encapsulated data. No DetNet specific encapsulation is defined
-        to support IP flows, rather existing IP header information is
-        used to support flow identification and DetNet service delivery
-        as described in the DetNet Architecture. General background on
-        the use of IP headers, and "5-tuples", to identify flows and
-        support Quality of Service (QoS) can be found in <xref
+        hosts and routers that provide DetNet service to IP encapsulated
+        data. No DetNet specific encapsulation is defined to support IP
+        flows, rather existing IP header information is used to support
+        flow identification and DetNet service delivery. General
+        background on the use of IP headers, and "5-tuples", to identify
+        flows and support Quality of Service (QoS) can be found in <xref
         target="RFC3670"/>.  <xref target="RFC7657"/> also provides
         useful background on the delivery differentiated services
         (DiffServ) and "6-tuple" based flow identification.
@@ -88,15 +87,21 @@
         provides congestion protection (low loss, assured latency, and
         limited reordering). As no DetNet specific headers are added to
         support IP DetNet flows, only the transport layer functions are
-        supported. Service protection can be provided on a per sub-net
+        supported using the IP DetNet defined by this document. Service
+        protection can be provided on a per sub-net 
         basis using technologies such as MPLS <xref
         target="I-D.ietf-detnet-dp-sol-mpls"/> and IEEE802.1 TSN.
       </t>
       <t>
-        This document does not define the associated control plane
-        functions, or Operations, Administration, and Maintenance
-        (OAM). Providing a native IP solution for the DetNet service
-        layer is out of scope of this document.
+        This document provides an overview of the DetNet IP data plane
+        in <xref target="sec_dt_dp"/>, considerations that apply to
+        providing DetNet services via the DetNet IP data plane in <xref
+        target="dn-gen-encap-solution"/> and <xref
+        target="m-cp-considerations"/>. <xref target="ip-encap"/>
+        provides the requirements for hosts and routers that support
+        IP-based DetNet services. Finally, <xref target="mapping-tsn"/>
+        provides rules for mapping IP-based DetNet flows to IEEE 802.1
+        TSN streams.
       </t>
     </section>
 
@@ -133,8 +138,6 @@
         </t>
       </section>
 
-    </section>
-
     <section title="Requirements language">
       <t>
         The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
@@ -145,8 +148,10 @@
         capitals, as shown here.
       </t>
     </section>
+    </section>
 
-    <section title="DetNet Data Plane Overview" anchor="sec_dt_dp">
+
+    <section title="DetNet IP Data Plane Overview" anchor="sec_dt_dp">
       <t>
         This document describes how IP is used by DetNet nodes, i.e.,
         hosts and routers, to identify DetNet flows and provide a DetNet
@@ -339,6 +344,14 @@ End System       Node            Node         Node        End System
            -->
       </section>
 
+      <section anchor="mapping.overview"
+               title="Mapping IP DetNet Flows to Sub-Networks and Links">
+        <t>
+          [LB] Mapping IP DetNet Flows to MPLS is in <xref
+          target="I-D.ietf-detnet-dp-sol-mpls"/>?
+        </t>
+    </section>
+
 
     </section>
 
@@ -346,8 +359,12 @@ End System       Node            Node         Node        End System
     <!-- =================== General Encap considerations ================ -->
     <!-- ================================================================= -->
 
-    <section title="DetNet encapsulation" anchor="dn-gen-encap-solution">
-
+    <section title="DetNet IP Encapsulation Considerations" anchor="dn-gen-encap-solution">
+      <t>
+        [LB] This section provides *informative* considerations related
+        to providing DetNet services via IP.
+      </t>
+      
       <section title="End-system specific considerations">
         <t>
           [JiK] Update according to the "simplified-IP" theme
@@ -593,16 +610,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
         <xref target="simplifiedip"/> illustrated the case for DetNet simplified IP data plane solution.
       </t>
     </section>
-    </section>
 
-
-    <!-- ================================================================= -->
-
-
-    <section title="Other DetNet data plane considerations">
-      <t> NOTE: these sections are simple copy pasted from earlier document.
-      They may not be needed.
-      </t>
       <section title="OAM">
         <t>
           [LB] This section is TBD
@@ -798,7 +806,6 @@ DetNet                    |L2/SbN|          |L2/SbN|
           may also have to move sequence number fields among Layer 2, PW, and IPv6 encapsulations.
         </t>
       </section>
-    </section>
 
     <!-- ===================================================================== -->
     <section title="Time synchronization">
@@ -893,46 +900,10 @@ DetNet                    |L2/SbN|          |L2/SbN|
       </t>
 
     </section>
+  </section>
     <!-- ===================================================================== -->
 
-    <section title="Mapping IP DetNet Flows to MPLS">
-      <t>
-        [LB] is this belongs in <xref
-        target="I-D.ietf-detnet-dp-sol-mpls"/>?
-      </t>
-    </section>
-    <section title="Mapping IP DetNet Flows to IEEE 802.1 TSN">
-      <t>
-        [LB] This section is TBD - it covers how IP DetNet flows operate
-        over an IEEE 802.1 TSN sub-network.
-        [BV to take a pass at filling in this section]
-      </t>
-      <section title="TSN Stream ID Mapping">
-        <t>
-          [LB] This section covers the data plane aspects of mapping an
-          IP DetNet flow to one or more TSN Stream-IDs.
-        </t>
-      </section>
-      <section title="TSN Usage of FRER">
-        <t>
-          [Core point]TSN Streams support DetNet flows may use FRER
-          [802.1CB] based on the loss service requirements of the TSN
-          Stream, which is derived from the DetNet service requirements
-          of the DetNet mapped flow.  The specific operation of the FRER
-          is not modified by the use of DetNe and follows [802.1CB].
-        </t>
-      </section>
-      <section title="Management and Control Implications">
-        <t>
-          [LB] This section is TBD
-          Covers Creation, mapping, removal of TSN Stream IDs, related
-          parameters and,when needed, configuration of FRER. Supported
-          by management/control plane.
-        </t>
-      </section>
-    </section>
-
-    <section title="Management and control plane considerations">
+    <section title="Management and control plane considerations" anchor="m-cp-considerations">
       <t>
         [Editor's note: This section needs to be different for MPLS and IP solutions. Most solutions
         are technology dependant,]
@@ -1038,6 +1009,48 @@ DetNet                    |L2/SbN|          |L2/SbN|
 
     </section>
 
+
+    <!-- ===================================================================== -->
+
+    <section anchor="ip-encap" title="DetNet IP Encapsulation Procedures">
+      <t>
+        [LB] RFC2119 conformance language goes here
+      </t>
+    </section>
+
+
+    <!-- ===================================================================== -->
+
+    <section anchor="mapping-tsn" title="Mapping IP DetNet Flows to IEEE 802.1 TSN">
+      <t>
+        [LB] This section is TBD - it covers how IP DetNet flows operate
+        over an IEEE 802.1 TSN sub-network.
+        [BV to take a pass at filling in this section]
+      </t>
+      <section title="TSN Stream ID Mapping">
+        <t>
+          [LB] This section covers the data plane aspects of mapping an
+          IP DetNet flow to one or more TSN Stream-IDs.
+        </t>
+      </section>
+      <section title="TSN Usage of FRER">
+        <t>
+          [Core point]TSN Streams support DetNet flows may use FRER
+          [802.1CB] based on the loss service requirements of the TSN
+          Stream, which is derived from the DetNet service requirements
+          of the DetNet mapped flow.  The specific operation of the FRER
+          is not modified by the use of DetNe and follows [802.1CB].
+        </t>
+      </section>
+      <section title="Management and Control Implications">
+        <t>
+          [LB] This section is TBD
+          Covers Creation, mapping, removal of TSN Stream IDs, related
+          parameters and,when needed, configuration of FRER. Supported
+          by management/control plane.
+        </t>
+      </section>
+    </section>
 
     <!-- ===================================================================== -->
 
@@ -1165,7 +1178,6 @@ DetNet                    |L2/SbN|          |L2/SbN|
       <?rfc include="reference.RFC.7950"?>
       <?rfc include="reference.RFC.8040"?>
       <?rfc include="reference.I-D.ietf-detnet-architecture"?>
-      <?rfc include="reference.I-D.ietf-detnet-dp-alt"?>
       <?rfc include="reference.I-D.ietf-detnet-security"?>
 
       <reference anchor='I-D.ietf-detnet-dp-sol-mpls'>
