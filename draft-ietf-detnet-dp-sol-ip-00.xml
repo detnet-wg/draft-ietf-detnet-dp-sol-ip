@@ -122,18 +122,17 @@
           <list style="hanging" hangIndent="14">
             <t hangText="CE">Customer Edge equipment.</t>
             <t hangText="CoS">Class of Service.</t>
-            <t hangText="CW">Control Word.</t>
             <t hangText="DetNet">Deterministic Networking.</t>
             <t hangText="DF">DetNet Flow.</t>
             <t hangText="MPLS">Multiprotocol Label Switching.</t>
-            <t hangText="NSP">Native Service Processing.</t>
             <t hangText="OAM">Operations, Administration, and Maintenance.</t>
             <t hangText="PE">Provider Edge.</t>
             <t hangText="PREF">Packet Replication and Elimination Function.</t>
             <t hangText="PROEF">Packet Replication, Ordering and Elimination Function.</t>
             <t hangText="PSN">Packet Switched Network.</t>
             <t hangText="QoS">Quality of Service.</t>
-            <t hangText="TSN">Time-Sensitive Network.</t>
+            <t hangText="TSN">Time-Sensitive Networking, TSN is a Task Group of the IEEE
+            802.1 Working Group.</t>
           </list>
         </t>
       </section>
@@ -152,6 +151,28 @@
 
 
     <section title="DetNet IP Data Plane Overview" anchor="sec_dt_dp">
+<!-- LB: this section should provide the overview related to:
+    <section title="Simplified IP related DetNet data plane solution" anchor="simple-ip-solution">
+      <t> This section is the placeholder for the conclusion discussed during IETF 101.
+      </t>
+      <t>
+        [Editor's note: describe the 6 tuple way of identifying DetNet service flows. Also stress that PREF is
+        per network segment as described in <xref target="nwsegments"/>
+        <list style="symbols">
+          <t>DetNet flows are recognized based on 6 tuple.</t>
+          <t>No end to end DN Sequence Number present in the packet.</t>
+          <t>Links / sub nets may use their technology specific methods to achieve DN service.</t>
+          <t>TE information does not travel with the packet (e.g., nailed down path ensured via Policy-Based-Routing).</t>
+          <t>etc.</t>
+        </list>
+        ]
+      </t>
+
+      <t>
+        <xref target="simplifiedip"/> illustrated the case for DetNet simplified IP data plane solution.
+      </t>
+    </section>
+ -->
       <t>
         This document describes how IP is used by DetNet nodes, i.e.,
         hosts and routers, to identify DetNet flows and provide a DetNet
@@ -189,14 +210,14 @@ End System       Node                         Node        End System
         any DetNet service layer function, e.g., PROEF. IEEE 802.1 TSN
         is an example sub-network type which can provide support for
         DetNet flows and service.  The mapping of IP DetNet flows to TSN
-        streams and TSN protection mechanisms is expected to be defined
-        in a future document.
+        streams and TSN protection mechanisms is covered in<xref
+        target="mapping-tsn"/>.
       </t>
 
       <figure align="center" anchor="fig_ip_detnet"
               title="DetNet IP Over MPLS Network">
         <artwork><![CDATA[
-IP  DetNet       Edge           Transit       Edge        IP DetNet
+IP  DetNet       Relay          Transit       Relay       IP DetNet
 End System       Node            Node         Node        End System
                  (LER)           (LSR)        (LER)
 +---------+                                               +---------+
@@ -213,19 +234,22 @@ End System       Node            Node         Node        End System
                          ]]></artwork>
       </figure>
       <t>
-        <xref target="fig_ip_detnet_simple"/> illustrates a more
-        complect DetNet enabled IP network where an IP flow is mapped to
-        one or more MPLS (TE) LSPs.  The end systems still originate IP
+        <xref target="fig_ip_detnet_simple"/> illustrates a more complex
+        DetNet enabled IP network where an IP flow is mapped to one or
+        more MPLS (TE) LSPs.  The end systems still originate IP
         encapsulated traffic that is identified as DetNet flows.  The
-        edge node follow procedures defined in <xref
+        relay nodes follow procedures defined in <xref
         target="I-D.ietf-detnet-dp-sol-mpls"/> to map each DetNet flow
-        to MPLS LSPs. While not shown, Edge Nodes can provide service
+        to MPLS LSPs. While not shown, relay nodes can provide service
         layer functions such as PREF and PROEF over the MPLS transport
         layer, and this is indicated by the solid line for the MPLS
         facing portion of the Service component. Note that the Transit
         node is MPLS (TE) LSP aware and performs switching based on MPLS
         labels, and need not have any specific knowledge of the DetNet
-        service or the corresponding DetNet flow identification.
+        service or the corresponding DetNet flow identification. See
+        <xref target="I-D.ietf-detnet-dp-sol-mpls"/> for details on the
+        mapping of IP flows to MPLS as well as general support for
+        DetNet services using MPLS.
       </t>
 
       <section title="DetNet IP Flow Identification" anchor="sec:ipflow">
@@ -245,11 +269,10 @@ End System       Node            Node         Node        End System
 
         <t>
           DetNet flow aggregation may also be enabled via the use of
-          wildcards, masks, prefixes and ranges may be used to support
-          DetNet flow aggregation. In these cases, it is expected that
-          DetNet aware intermediate nodes will provide DetNet service
-          assurance on the aggregate through resource allocation and
-          control.
+          wildcards, masks, prefixes and ranges. In these cases, it is
+          expected that DetNet aware intermediate nodes will provide
+          DetNet service assurance on the aggregate through resource
+          allocation and mechanisms such as queuing.
         </t>
       </section>
       <section title="DetNet Data Plane Requirements">
@@ -343,16 +366,6 @@ End System       Node            Node         Node        End System
         </t>
            -->
       </section>
-
-      <section anchor="mapping.overview"
-               title="Mapping IP DetNet Flows to Sub-Networks and Links">
-        <t>
-          [LB] Mapping IP DetNet Flows to MPLS is in <xref
-          target="I-D.ietf-detnet-dp-sol-mpls"/>?
-        </t>
-    </section>
-
-
     </section>
 
     <!-- ================================================================= -->
@@ -583,33 +596,19 @@ DetNet                    |L2/SbN|          |L2/SbN|
 
         </section>
 
-
+        <!-- LB: I suspect this is redundant -->
+      <section anchor="mapping-overview"
+               title="Mapping IP DetNet Flows to Sub-Networks and Links">
+        <t>
+          [LB] Mapping IP DetNet Flows to MPLS is in <xref
+          target="I-D.ietf-detnet-dp-sol-mpls"/>?
+        </t>
+      </section>
     <!--
       </section>
     </section>
     -->
     <!-- ================================================================= -->
-
-    <section title="Simplified IP related DetNet data plane solution" anchor="simple-ip-solution">
-      <t> This section is the placeholder for the conclusion discussed during IETF 101.
-      </t>
-      <t>
-        [Editor's note: describe the 6 tuple way of identifying DetNet service flows. Also stress that PREF is
-        per network segment as described in <xref target="nwsegments"/>
-        <list style="symbols">
-          <t>DetNet flows are recognized based on 6 tuple.</t>
-          <t>No end to end DN Sequence Number present in the packet.</t>
-          <t>Links / sub nets may use their technology specific methods to achieve DN service.</t>
-          <t>TE information does not travel with the packet (e.g., nailed down path ensured via Policy-Based-Routing).</t>
-          <t>etc.</t>
-        </list>
-        ]
-      </t>
-
-      <t>
-        <xref target="simplifiedip"/> illustrated the case for DetNet simplified IP data plane solution.
-      </t>
-    </section>
 
       <section title="OAM">
         <t>
@@ -706,8 +705,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
           support will leverage the underlying network layer such as
           802.1TSN.  The traffic control mechanisms used to deliver QoS for
           IP encapsulated DetNet flows are expected to be defined in a future
-          document.  From an encapsulation perspective, and as defined in
-          <xref target="simple-ip-solution"/>, the combination of the "6 tuple" i.e.,
+          document.  From an encapsulation perspective, the combination of the "6 tuple" i.e.,
           the typical 5 tuple enhanced with the DSCP code, uniquely identifies a DetNet
           service flow.
         </t>
