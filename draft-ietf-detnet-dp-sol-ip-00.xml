@@ -345,8 +345,9 @@ End System       Node                         Node         End System
           </list>
           </t>
         </list></t>
-        <!-- [LB: is any of this still needed?  What else needs to be
-             said in this section?]
+        <!--
+          {BV: to review/update based on what still applies to
+             simplified IP]
         <t>
           Each DetNet node (edge, relay and transit) use an internal/implementation specific local-ID of the
           DetNet(-compound)-flow in order to accomplish its role during transport. Recognizing the DetNet
@@ -595,7 +596,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
           </t>
           <t>
             [LB: don't think we're addressing the rest of this in
-            simplified IP -- drop?]
+            simplified IP -- drop or redraw for independent FRER domains?]
           </t>
           <t> An important aspect of DetNet network design is placement of DetNet functions across the
           domain. Designs based on segment-by-segment optimization can provide only suboptimal solutions. In
@@ -1022,6 +1023,9 @@ DetNet                    |L2/SbN|          |L2/SbN|
         {ip addrs, dscp, nct protocol}
         need to support port identification for TCP/UDP, IPsec spi (?),
         what else?
+        Service proxies -- basically same from data plane, different
+        from management
+        map to local resources
       </t>
     </section>
 
