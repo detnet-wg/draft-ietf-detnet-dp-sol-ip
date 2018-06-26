@@ -258,20 +258,20 @@ End System       Node            Node         Node        End System
       <figure align="center" anchor="fig_non_detnet_ip"
               title="Non-DetNet aware IP end systems with IP DetNet Domain">
         <artwork><![CDATA[
-IP               Edge                         Edge         IP
-End System       Node                         Node         End System
+IP               Edge                        Edge         IP
+End System       Node                        Node         End System
 
-+---------+    +.........+                   +.........+   +---------+
-|  Appl.  |<---:Svc Proxy:-- E2E Service ----:Svc Proxy:-->|  Appl.  |
-+---------+    +---------+                   +---------+   +---------+
-|   IP    |    |IP | |Svc|<-- DetNet flow -->|Svc| |IP |   |   IP    |
-+---------+    +---+ +---+                   +---+ +---+   +---------+
-|Transport|    |Trp| |Trp|                   |Trp| |Trp|   |Transport|
-+-------.-+    +-.-+ +-.-+                   +-.-+ +-.-+   +---.-----+
++---------+    +.........+                  +.........+   +---------+
+|  Appl.  |<---:Svc Proxy:-- E2E Service ---:Svc Proxy:-->|  Appl.  |
++---------+    +---------+                  +---------+   +---------+
+|   IP    |    |IP | |Svc|<-- DetNet flow ->|Svc| |IP |   |   IP    |
++---------+    +---+ +---+                  +---+ +---+   +---------+
+|Transport|    |Trp| |Trp|                  |Trp| |Trp|   |Transport|
++-------.-+    +-.-+ +-.-+                  +-.-+ +-.-+   +---.-----+
         :  Link  :      \       ,-----.      /     /  ,-----.  \
-        +........+       +-----[  Sub  ]----+      +-[  Sub  ]-+
-                               [Network]             [Network]
-                                `-----'               `-----'
+        +........+       +-----[  Sub  ]---+      +-[  Sub  ]-+
+                               [Network]            [Network]
+                                `-----'              `-----'
 
       |<----IP --->|    |<----- DetNet IP ------>|     |<----IP --->|
                          ]]></artwork>
@@ -837,96 +837,34 @@ DetNet                    |L2/SbN|          |L2/SbN|
 
     <!-- ===================================================================== -->
     <section title="Time synchronization">
-      <t>
-        [JiK] Should be documented somewhere else.. possible in it own document. Time sync not part of the data plane.
-        [JiK] 802.1AS over routers? Who is doing that. In 802.1 is doing ".1AS over time aware systems?" Provide a reference.
-        [JiK] Check TICTOC,
-      </t>
-      <t> [Editor's NOTE: delete this section (scope time synchronization solution outside data plane).]
-      </t>
-      <t>
-        <list style="hanging">
-          <t hangText="Comment #5">
-            SB> This section should point the reader to RFC8169 (residence time
-            in MPLS n/w. We need to consider if we need to introduce the same
-            concept in IP.
-          </t>
-          <t hangText="Discussion:">
-            Agree. For IP we could reference to PTPv2 or v3 over UDP/IP, since it measures
-            residence time among other things.
-          </t>
-        </list>
-        [Editor's note: describe a bit of issues and deployment considerations
-        related to time-synchronization within DetNet. Refer to DT discussion and the
-        slides that summarize different approaches and rough synchronization
-        performance numbers.  Finally, scope time-synchronization solution outside
-        data plane.]
-      </t>
-
-
-      <t>When DetNet is used, there is an underlying assumption that the
-      applicaton(s) require clock synchronization such as the Precision Time Protocol
-      (PTP) <xref target="IEEE1588"/>. The relay nodes may or may not utilize clock synchronization
-      in order to provide zero congestion loss and controlled latency delivery.  In either case, there are a
-      few possible approaches of
-      how synchronization protocol packets are forwarded and handled by the
-      network:</t>
-
-      <t><list style="symbols">
-
-        <t>
-          PTP packets can be sent either as DetNet flows or as high-priority
-          best effort packets.  Using DetNet for PTP packets requires careful
-          consideration to prevent unwanted interactions between clock-synchronized
-          network nodes and the packets that synchronize the clocks.
-        </t>
-        <t>PTP packets are sent as a normal DetNet flow through network nodes
-        that are not time-synchronized: in this approach PTP
-        traffic is forwarded as a DetNet flow, and as such it is forwarded in a
-        way that allows a low delay variation. However, since intermediate nodes
-        do not take part in the synchronization protocol, this approach provides
-        a relatively low degree of accuracy.</t>
-
-        <t>PTP with on-path support: in this approach PTP packets are sent as
-        ordinary or as DetNet flows, and intermediate nodes take part in the protocol as
-        Transparent Clocks or Boundary Clocks <xref target="IEEE1588"/>. The on-path PTP
-        support by intermediate nodes provides a higher degree of accuracy than
-        the previous approach. The actual accuracy depends on whether all
-        intermediate nodes are PTP-capable, or only a subset of them.</t>
-
-        <t>Time-as-a-service: in this approach accurate time is provided
-        as-a-service to the DetNet source and destination, as well as the
-        intermediate nodes. Since traffic between the source and destination is
-        sent over a provider network, if the provider supports
-        time-as-a-service, then accurate time can be provided to both the source
-        and the destination of DetNet traffic. This approach can potentially
-        provide the highest degree of accuracy.</t>
-
-      </list></t>
-
-      <t>It is expected that the latter approach will be the most common one,
-      as it provides the highest degree of accuracy, and creates a layer
-      separation between the DetNet data and the synchronization service.</t>
-
-      <t>It should be noted that in all four approaches it is not recommended
-      to use replication and elimination for synchronization packets; the
-      replication/elimination approach may in some cases reduce the
-      synchronization accuracy, since the observed path delay will be
-      bivalent.
-      <list style="hanging">
-        <t hangText="Comment #6">
-          SB> I am not sure why we sould not use PREP. We should explain to the
-          reader.
-        </t>
-        <t hangText="Discussion:">
-          Agree that a this can be opened a bit more in detail. The
-          issue is explained briefly in the last sentence but it
-          could be more clear.
-        </t>
-      </list>
-
-      </t>
-
+     <t>
+      Editor's Note: A detailed discussion of time synchronization is
+      outside the scope of this document, and the production of a
+      specialist text discussing this topic is encouraged.  This section
+      will be updated if such a documents is available before publication
+      of this text.
+     </t>
+     <t>   
+      Time synchronization is important both from the perspective of
+      operating the DetNet network itself and from the perspective of
+      transferring time across the network between client applications.
+      Some clients may be able to use the DetNet as their provider of time
+      and frequency, others may require the DetNet to transfer time between
+      a client clock source and a client clock user.
+     </t>
+     <t>
+      The reader's attention is drawn to <xref target="RFC8169"/> which describes a method
+      of recording the packet queuing time in an MPLS LSR on a packet by
+      per packet basis and forwarding this information to the egress edge
+      system.  This allows compensation for any variable packet queuing
+      delay to be applied at the packet receiver. Whether a similar mechanism
+      needs to be defined for IP is for further study. Such a mechanism
+      may have wider application than basic time transfer in a DetNet.
+     </t>
+     <t>
+      A more detailed discussion of time synchronization is outside the
+      scope of this document.
+     </t>
     </section>
   </section>
     <!-- ===================================================================== -->
@@ -1215,6 +1153,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
       <?rfc include="reference.RFC.7657"?>
       <?rfc include="reference.RFC.7950"?>
       <?rfc include="reference.RFC.8040"?>
+      <?rfc include="reference.RFC.8169"?>
       <?rfc include="reference.I-D.ietf-detnet-architecture"?>
       <?rfc include="reference.I-D.ietf-detnet-security"?>
 
@@ -1226,18 +1165,6 @@ DetNet                    |L2/SbN|          |L2/SbN|
             <organization>Korhonen, J., Varga, B.</organization>
           </author>
           <date year='2018' />
-        </front>
-      </reference>
-
-      <reference anchor='IEEE1588'>
-        <front>
-          <title>IEEE 1588 Standard for a Precision Clock Synchronization
-          Protocol for Networked Measurement and Control Systems Version 2
-          </title>
-          <author>
-            <organization>IEEE</organization>
-          </author>
-          <date year='2008' />
         </front>
       </reference>
 
