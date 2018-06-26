@@ -846,29 +846,22 @@ DetNet                    |L2/SbN|          |L2/SbN|
 
     <!-- ===================================================================== -->
     <section title="Time synchronization">
-     <t>
-      Editor's Note: A detailed discussion of time synchronization is
-      outside the scope of this document, and the production of a
-      specialist text discussing this topic is encouraged.  This section
-      will be updated if such a documents is available before publication
-      of this text.
-     </t>
      <t>   
-      Time synchronization is important both from the perspective of
+      While time synchronization can be important both from the perspective of
       operating the DetNet network itself and from the perspective of
-      transferring time across the network between client applications.
-      Some clients may be able to use the DetNet as their provider of time
-      and frequency, others may require the DetNet to transfer time between
-      a client clock source and a client clock user.
+      DetNet-based applications, time synchronization is outside the
+      scope of this document.  This said, a DetNet node can also support
+      time synchronization or distribution mechanisms.
      </t>
      <t>
-      The reader's attention is drawn to <xref target="RFC8169"/> which describes a method
+      For example, <xref target="RFC8169"/> describes a method
       of recording the packet queuing time in an MPLS LSR on a packet by
       per packet basis and forwarding this information to the egress edge
       system.  This allows compensation for any variable packet queuing
-      delay to be applied at the packet receiver. Whether a similar mechanism
-      needs to be defined for IP is for further study. Such a mechanism
-      may have wider application than basic time transfer in a DetNet.
+      delay to be applied at the packet receiver. Other mechanisms for
+      IP networks are
+      defined based on IEEE Standard 1588 <xref target="IEEE1588"/>,
+      such as ITU-T <xref target="G.8275.1"/> and <xref target="G.8275.2"/>.
      </t>
      <t>
       A more detailed discussion of time synchronization is outside the
@@ -1188,6 +1181,18 @@ DetNet                    |L2/SbN|          |L2/SbN|
         </front>
       </reference>
 
+      <reference anchor='IEEE1588'>
+        <front>
+          <title>IEEE 1588 Standard for a Precision Clock Synchronization
+          Protocol for Networked Measurement and Control Systems Version 2
+          </title>
+          <author>
+            <organization>IEEE</organization>
+          </author>
+          <date year='2008' />
+        </front>
+      </reference>
+
       <reference anchor="IEEE8021Q"
                  target="http://standards.ieee.org/about/get/">
         <front>
@@ -1211,6 +1216,30 @@ DetNet                    |L2/SbN|          |L2/SbN|
         </front>
         <seriesInfo name="IEEE P802.1CB /D2.1" value="P802.1CB"/>
         <format type="PDF" target="http://www.ieee802.org/1/files/private/cb-drafts/d2/802-1CB-d2-1.pdf"/>
+      </reference>
+
+      <reference anchor="G.8275.1"
+                 target="https://www.itu.int/rec/T-REC-G.8275.1/en">
+        <front>
+          <title>Precision time protocol telecom profile for phase/time synchronization with full timing support from the network</title>
+          <author>
+            <organization>International Telecommunication Union</organization>
+          </author>
+          <date month="June" year="2016"/>
+        </front>
+        <seriesInfo name="ITU-T G.8275.1/Y.1369.1" value="G.8275.1"/>
+      </reference>
+
+      <reference anchor="G.8275.2"
+                 target="https://www.itu.int/rec/T-REC-G.8275.2/en">
+        <front>
+          <title>Precision time protocol telecom profile for phase/time synchronization with partial timing support from the network</title>
+          <author>
+            <organization>International Telecommunication Union</organization>
+          </author>
+          <date month="June" year="2016"/>
+        </front>
+        <seriesInfo name="ITU-T G.8275.2/Y.1369.2" value="G.8275.2"/>
       </reference>
 
     </references>
