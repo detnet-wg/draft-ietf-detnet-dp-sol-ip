@@ -218,11 +218,10 @@ End System       Node                         Node        End System
 
       <figure align="center" anchor="fig_ip_detnet"
               title="DetNet IP Over MPLS Network">
-        <!-- LB: move to mpls document. -->
         <artwork><![CDATA[
 IP  DetNet       Relay          Transit       Relay       IP DetNet
 End System       Node            Node         Node        End System
-                 (LER)           (LSR)        (LER)
+
 +---------+                                               +---------+
 |  Appl.  |<--------------- End to End Service ---------->|  Appl.  |
 +---------+    .....-----+                  +-----.....   +---------+
@@ -241,7 +240,7 @@ End System       Node            Node         Node        End System
       <t>
         <xref target="fig_ip_detnet"/> illustrates a more complex
         DetNet enabled IP network where an IP flow is mapped to one or
-        more MPLS (TE) LSPs.  The end systems still originate IP
+        more PWs and MPLS (TE) LSPs.  The end systems still originate IP
         encapsulated traffic that is identified as DetNet flows.  The
         relay nodes follow procedures defined in <xref
         target="I-D.ietf-detnet-dp-sol-mpls"/> to map each DetNet flow
