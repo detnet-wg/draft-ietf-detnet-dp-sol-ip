@@ -291,7 +291,7 @@ End System       Node                        Node         End System
       <section title="DetNet IP Flow Identification" anchor="sec:ipflow">
         <t>
           DetNet IP flows are identified based on IP, both IPv4 <xref
-          target="RFC0791"/> and IPv6 <xref target="RFC2460"/>, header
+          target="RFC0791"/> and IPv6 <xref target="RFC8200"/>, header
           information.  6 header fields are used and this set of fields
           is commonly referred to as the IP header "6-tuple".  The 6
           fields include the IP source and destination address fields,
@@ -1145,7 +1145,6 @@ DetNet                    |L2/SbN|          |L2/SbN|
       <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.2211"?>
       <?rfc include="reference.RFC.2212"?>
-      <?rfc include="reference.RFC.2460"?>
       <?rfc include="reference.RFC.2474"?>
       <?rfc include="reference.RFC.3168"?>
       <?rfc include="reference.RFC.3209"?>
@@ -1156,6 +1155,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
       <?rfc include="reference.RFC.5462"?>
       <?rfc include="reference.RFC.6003"?>
       <?rfc include="reference.RFC.8174"?>
+      <?rfc include="reference.RFC.8200"?>
     </references>
     <references title="Informative references">
       <?rfc include="reference.RFC.2205"?>
