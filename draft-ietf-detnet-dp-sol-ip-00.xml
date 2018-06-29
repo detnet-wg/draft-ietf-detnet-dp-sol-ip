@@ -127,8 +127,7 @@
             <t hangText="MPLS">Multiprotocol Label Switching.</t>
             <t hangText="OAM">Operations, Administration, and Maintenance.</t>
             <t hangText="PE">Provider Edge.</t>
-            <t hangText="PREF">Packet Replication and Elimination Function.</t>
-            <t hangText="PROEF">Packet Replication, Ordering and Elimination Function.</t>
+            <t hangText="PREOF">Packet Replication, Ordering and Elimination Function.</t>
             <t hangText="PSN">Packet Switched Network.</t>
             <t hangText="QoS">Quality of Service.</t>
             <t hangText="TSN">Time-Sensitive Networking, TSN is a Task Group of the IEEE
@@ -245,7 +244,7 @@ End System       Node            Node         Node        End System
         relay nodes follow procedures defined in <xref
         target="I-D.ietf-detnet-dp-sol-mpls"/> to map each DetNet flow
         to MPLS LSPs. While not shown, relay nodes can provide service
-        layer functions such as PREF and PROEF over the MPLS transport
+        layer functions such as PREOF over the MPLS transport
         layer, and this is indicated by the solid line for the MPLS
         facing portion of the Service component. Note that the Transit
         node is MPLS (TE) LSP aware and performs switching based on MPLS
@@ -292,7 +291,7 @@ End System       Node                        Node         End System
       <section title="DetNet IP Flow Identification" anchor="sec:ipflow">
         <t>
           DetNet IP flows are identified based on IP, both IPv4 <xref
-          target="RFC0791"/> and IPv6 <xref target="RFC2460"/>, header
+          target="RFC0791"/> and IPv6 <xref target="RFC8200"/>, header
           information.  6 header fields are used and this set of fields
           is commonly referred to as the IP header "6-tuple".  The 6
           fields include the IP source and destination address fields,
@@ -888,7 +887,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
       <t>
         [Editor's note: This section is a work in progress.
         discuss here what kind of enhancements are needed for DetNet
-        and specifically for PREF and DetNet zero congest loss and latency
+        and specifically for PREOF and DetNet zero congest loss and latency
         control. Need to cover both traffic control (queuing) and connection
         control (control plane).]
       </t>
@@ -1146,7 +1145,6 @@ DetNet                    |L2/SbN|          |L2/SbN|
       <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.2211"?>
       <?rfc include="reference.RFC.2212"?>
-      <?rfc include="reference.RFC.2460"?>
       <?rfc include="reference.RFC.2474"?>
       <?rfc include="reference.RFC.3168"?>
       <?rfc include="reference.RFC.3209"?>
@@ -1157,6 +1155,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
       <?rfc include="reference.RFC.5462"?>
       <?rfc include="reference.RFC.6003"?>
       <?rfc include="reference.RFC.8174"?>
+      <?rfc include="reference.RFC.8200"?>
     </references>
     <references title="Informative references">
       <?rfc include="reference.RFC.2205"?>
@@ -1245,7 +1244,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
     <section title="Example of DetNet data plane operation" anchor="sec_comb">
       <t>
         [Editor's note: Add a simplified example of DetNet data plane and how labels etc
-        work in the case of MPLS-based PSN and utilizing PREF. The figure is subject
+        work in the case of MPLS-based PSN and utilizing PREOF. The figure is subject
         to change depending on the further DT decisions on the label handling..]
       </t>
     </section>
