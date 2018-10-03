@@ -275,9 +275,9 @@ End System       Node                        Node         End System
 
 +---------+    +.........+                  +.........+   +---------+
 |  Appl.  |<---:Svc Proxy:-- E2E Service ---:Svc Proxy:-->|  Appl.  |
-+---------+    +---------+                  +---------+   +---------+
-|   IP    |<---|IP | |   |----- IP flow ----|   | |IP |-->|   IP    |
-|         |    |   | |Svc|<-- DetNet flow ->|Svc| |   |   |         |
++---------+    +-----....+                  +---------+   +---------+
+|   IP    |<---|IP | :   :----- IP flow ----|   | |IP |-->|   IP    |
+|         |    |   | :Svc:<-- DetNet flow ->|Svc| |   |   |         |
 +---------+    +---+ +---+                  +---+ +---+   +---------+
 |Transport|    |Trp| |Trp|                  |Trp| |Trp|   |Transport|
 +-------.-+    +-.-+ +-.-+                  +-.-+ +-.-+   +---.-----+
@@ -349,8 +349,12 @@ End System       Node                        Node         End System
             characteristics. Path changes, even in the case of failure
             recovery, can lead to the out of order delivery of data.</t>  	<t>Note: 
 			DetNet PREOF is not provided by the mechanisms defined in this 
-			document.</t> <t>Note: The spreading of a single DetNet flow across multiple paths,
-            e.g., via ECMP, also impacts ordering and end-to-end jitter, and as
+			document.</t> 
+			
+			<t hangText="Load sharing:"> <vspace blankLines="1"/>
+			Load sharing is not recommended for packets of the same DetNet flow. 
+			The spreading of a single DetNet flow across multiple paths,
+            e.g., via ECMP or UCMP, also impacts ordering and end-to-end jitter, and as
             such use of multiple paths for support of a single DetNet flow is is
             out of scope this document.</t>
           </list>
@@ -383,6 +387,10 @@ End System       Node                        Node         End System
           DSCP).  As part of single DetNet flow identification, any of
           the fields can be ignored (wildcarded), and bit masks, prefix
           based longest match, and ranges can also be used.
+        </t>
+        <t>
+          Note: using IP multicast destination address is also allowed 
+		  within the 6-tuple.
         </t>
 
         <t>
