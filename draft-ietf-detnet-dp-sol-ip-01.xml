@@ -902,54 +902,224 @@ DetNet                    |L2/SbN|          |L2/SbN|
         [Editor's note: This section is TBD - it covers how IP DetNet flows operate
         over an IEEE 802.1 TSN sub-network. BV to take a pass at filling in this section]
       </t>
+
+      <t>
+      This section covers how IP DetNet flows operate over an IEEE 802.1 TSN sub-network. 
+      <xref target="fig_ip_detnet_to_tsn"/> illustrates such a scenario, where two IP (DetNet)
+	  nodes are interconnected by a TSN sub-network. Node-1 is single homed and Node-2 is dual-homed.
+	  IP nodes can be (1) IP DetNet End System, (2) IP DetNet Edge or Relay node or (3) IP End System.
+	  </t>
+
+<figure align="center" anchor="fig_ip_detnet_to_tsn"
+              title="DetNet (DN) Enabled IP Network over a TSN sub-network">
+<artwork><![CDATA[
+    IP (DetNet)                  IP (DetNet)
+      Node-1                       Node-2 
+
+   ...........                  ...........
+<--: Service :-- DetNet flow ---: Service :-->
+   +---------+                  +---------+
+   |Transport|                  |Transport|
+   +-------.-+    <-TSN Str->   +-.-----.-+
+            \      ,-------.     /     /
+             +----[ TSN-Sub ]---+     / 
+                  [ Network ]--------+      
+                   `-------'            
+<----------------- DetNet IP ---------------->
+]]></artwork>
+      </figure>
       
-        <!-- t> [JiK] combine this with the mapping section.
-        </t -->
-        <t>
+		<t>
           The Time-Sensitive Networking (TSN) Task Group of the IEEE 802.1 Working Group have
           defined (and are defining) a number of amendments to <xref target="IEEE8021Q">IEEE 802.1Q</xref>
-          that provide zero congestion loss and bounded latency in bridged networks.
-          <xref target="IEEE8021CB">IEEE 802.1CB</xref> defines packet replication and elimination
-          functions that should prove both compatible with and useful to, DetNet networks.
+          that provide zero congestion loss and bounded latency in bridged networks. Furthermore
+          <xref target="IEEE8021CB">IEEE 802.1CB</xref> defines frame replication and elimination
+          functions for reliability that should prove both compatible with and useful to, DetNet networks.
+		  All these functions have to identify flows those require TSN treatment.
           </t><t>
           As is the case for DetNet, a Layer 2 network node such as a bridge may need to
           identify the specific DetNet flow to which a packet belongs in order to provide the
-          TSN/DetNet QoS for that packet.  It also will likely need a CoS marking, such as the
+          TSN/DetNet QoS for that packet.  It also may need a CoS marking, such as the
           priority field of an IEEE Std 802.1Q VLAN tag, to give the packet proper service.
           </t>
-          <t>
+<!--          <t>
            Although the flow identification methods described in <xref
            target="IEEE8021CB">IEEE 802.1CB</xref> are flexible, and in fact,
-           include IP 5-tuple identification methods, the baseline TSN standards
+           include IP 6-tuple identification methods, the baseline TSN standards
            assume that every Ethernet frame belonging to a TSN stream (i.e.
            DetNet flow) carries a multicast destination MAC address that is
            unique to that flow within the bridged network over which it is
            carried.  Furthermore, <xref target="IEEE8021CB">IEEE 802.1CB</xref>
            describes three methods by which a packet sequence number can be
            encoded in an Ethernet frame.
-          </t>
+
+		   TEXT need adjustment, DELETE
+		   
+		   Extract from .1CB Introduction:
+		   ... TSN supports unicast and multicast Streams of packets ...
+		   
+		   The only Sequence encode/decode format specified as required, separately from 
+		   any Stream identification function, is the Redundancy tag (R-TAG, 7.8). In 
+		   addition, two optional formats (7.9, 7.10) are defined.
+		   
+          </t> 
           <t>
            Ensuring that the proper Ethernet VLAN tag priority and destination
            MAC address are used on a DetNet/TSN packet may require further
            clarification of the customary L2/L3 transformations carried out by
            routers and edge label switches.  Edge nodes may also have to move
            sequence number fields among Layer 2, PW, and IPv6 encapsulations.
+		   
+		   TEXT need adjustment, DELETE
+		   No PW, no edge label switches to be covered here.
+
         </t>
+-->
+		<t>
+		TSN capabilities of the TSN sub-network is made available for IP (DetNet) flows via the protocol 
+		interworking function defined in <xref target="IEEE8021CB">IEEE 802.1CB</xref>. For example,
+		applied on the TSN edge port connected to the IP (DetNet) node it can convert an ingress 
+		unicast IP (DetNet) flow to use a specific multicast destination MAC address and VLAN, in order to
+		direct the packet through a specific path inside the bridged network. A similar interworking
+		pair at the other end of the TSN sub-network would restore the packet to its original 
+		destination MAC address and VLAN.
+		</t>
+		<t> 
+		Placement of TSN functions depends on the TSN capabilities of nodes. IP (DetNet) Nodes may or 
+		may not support TSN functions. For a given TSN Stream (i.e., DetNet flow)
+		an IP (DetNet) node is treated as a Talker or a Listener inside the TSN sub-network.
+        </t>
+
       <section title="TSN Stream ID Mapping">
         <t>
-          [Editor's Note: This section covers the data plane aspects of mapping an
-          IP DetNet flow to one or more TSN Stream-IDs.]
+        IP DetNet Flow and TSN Stream mapping is based on the active Stream Identification function, 
+		that operates at the frame level. <xref target="IEEE8021CB">IEEE 802.1CB</xref> defines an 
+		Active Destination MAC and VLAN Stream identification function, what can replace some Ethernet 
+		header fields namely (1) the destination MAC-address, (2) the VLAN-ID and (3) priority parameters 
+		with alternate values. Replacement is provided for the frame passed down the stack 
+		from the upper layers or up the stack from the lower layers. 
+        </t>
+        <t>
+		Active Destination MAC and VLAN Stream identification can be used within a Talker to set flow 
+		identity or a Listener to recover the original addressing information. It can be used also in 
+		a TSN bridge that is providing translation as a proxy service for an End System. As a result IP (DetNet) flows 
+		can be mapped to use a particular {MAC-address, VLAN} pair to match the Stream in the TSN sub-network.
+		</t>
+		<t>
+		From the TSN sub-network perspective IP DetNet nodes without any TSN functions can be treated as TSN-unaware 
+		Talker or Listener.	In such cases relay nodes in the TSN sub-network MUST modify the Ethernet encapsulation of 
+		the IP DetNet flow (e.g., MAC translation, VLAN-ID setting, Sequence number addition, etc.) to allow proper 
+		TSN specific handling of the flow inside the sub-network. This is illustrated in <xref target="fig_ip_without_tsn"/>.
+		</t>
+		
+<figure align="center" anchor="fig_ip_without_tsn"
+              title="IP (DetNet) node without TSN functions">
+<artwork><![CDATA[
+    IP (DetNet)
+      Node-1
+   <---------> 
+   
+   ...........
+<--: Service :-- DetNet flow ------------------
+   +---------+
+   |Transport|
+   +---------+    +---------------+  
+   |   L2    |    | L2 Relay with |<--- TSN ----
+   |         |    | TSN function  |    Stream
+   +----.----+    +--.---------.--+
+         \__________/           \______
+		 
+   TSN-unaware        
+    Talker /          TSN-Bridge
+    Listener             Relay
+                <-------- TSN sub-network -------
+]]></artwork>
+      </figure>
+
+		<t>
+		IP (DetNet) nodes being TSN-aware can be treated as a combination of a TSN-unaware Talker/Listener and a TSN-Relay, as shown in
+		<xref target="fig_ip_with_tsn"/>. 
+		In such cases the IP (DetNet) node MUST provide the TSN sub-network specific Ethernet encapsulation over the link(s)
+		towards the sub-network. An TSN-aware IP (DetNet) node MUST support the following TSN components:
+        
+        <list style="numbers">
+          <t>For recognizing flows:
+			<list style="symbols">
+			<t>Stream Identification</t>
+			</list>
+		  </t>
+          <t>For FRER used inside the TSN domain, additonaly:
+			<list style="symbols">
+			<t>Sequencing function</t>
+			<t>Sequence encode/decode function</t>
+			</list>
+		  </t>
+          <t>For FRER when the node is a replication or elimination point, additionally:
+			<list style="symbols">
+			<t>Stream splitting function</t>
+			<t>Individual recovery function</t>
+			</list>
+		  </t>
+        </list>
+        </t>
+
+        <t>
+          [Editor's note: Should we added here requirements regarding IEEE 802.1Q C-VLAN component?]
+        </t>
+
+		<figure align="center" anchor="fig_ip_with_tsn"
+              title="IP (DetNet) node with TSN functions">
+<artwork><![CDATA[
+
+                IP (DetNet)
+				  Node-2
+   <----------------------------------> 
+   
+   ...........
+<--: Service :-- DetNet flow ------------------
+   +---------+
+   |Transport|
+   +---------+    +---------------+  
+   |   L2    |    | L2 Relay with |<--- TSN ---
+   |         |    | TSN function  |    Stream
+   +----.----+    +--.------.---.-+
+         \__________/        \   \______
+                              \_________
+   TSN-unaware        
+    Talker /          TSN-Bridge
+    Listener             Relay
+                                      <----- TSN Sub-network -----
+   <------ TSN-aware Tlk/Lstn ------->
+]]></artwork>
+      </figure>
+
+        <t>
+		A Stream identification component MUST be able to instantiate the following functions 
+		(1) Active Destination MAC and VLAN Stream identification function, (2) IP Stream identification 
+		function and (3) the related managed objects in Clause 9 of <xref target="IEEE8021CB">IEEE 802.1CB</xref>.
+		IP Stream identification function provides a 6-tuple match.  
+        </t>
+        <t>
+		The Sequence encode/decode function MUST support the Redundancy tag (R-TAG) format as per Clause 7.8 of 
+		<xref target="IEEE8021CB">IEEE 802.1CB</xref>.
         </t>
       </section>
       <section title="TSN Usage of FRER">
         <t>
-          [Core point] TSN Streams support DetNet flows may use Frame
+          TSN Streams supporting DetNet flows may use Frame
           Replication and Elimination for Redundancy (FRER) [802.1CB] based on
           the loss service requirements of the TSN Stream, which is derived from
           the DetNet service requirements of the DetNet mapped flow.  The
-          specific operation of the FRER is not modified by the use of DetNe and
+          specific operation of FRER is not modified by the use of DetNet and
           follows  <xref target="IEEE8021CB">IEEE 802.1CB</xref>.
         </t>
+        <t>
+          FRER function and the provided service recovery is available only within the TSN 
+		  sub-network (as shown in <xref target="fig_pref_in_subnets"/>) as the Stream-ID and the 
+		  TSN sequence number are not valid outside the sub-network. 
+		  An IP (DetNet) node represents a L3 border and as such it terminates all related information 
+		  elements encoded in the L2 frames.
+		</t>
       </section>
       <section title="Management and Control Implications">
         <t>
