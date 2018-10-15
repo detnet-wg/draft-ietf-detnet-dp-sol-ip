@@ -70,9 +70,9 @@
       <t>
         This document specifies the DetNet data plane operation for IP
         hosts and routers that provide DetNet service to IP encapsulated
-        data, 
-		so dealing with TSN flows is out-of-scope in this document. 
-		No DetNet specific encapsulation is defined to support IP
+        data,
+        so dealing with TSN flows is out-of-scope in this document.
+        No DetNet specific encapsulation is defined to support IP
         flows, rather existing IP header information is used to support
         flow identification and DetNet service delivery. General
         background on the use of IP headers, and "5-tuples", to identify
@@ -90,7 +90,7 @@
         limited reordering). As no DetNet specific headers are added to
         support IP DetNet flows, only the transport layer functions are
         supported using the IP DetNet defined by this document. Service
-        protection can be provided on a per sub-net 
+        protection can be provided on a per sub-net
         basis using technologies such as MPLS <xref
         target="I-D.ietf-detnet-dp-sol-mpls"/> and IEEE802.1 TSN.
       </t>
@@ -159,7 +159,8 @@
     <section title="DetNet IP Data Plane Overview" anchor="sec_dt_dp">
 <!-- LB: this section should provide the overview related to:
     <section title="Simplified IP related DetNet data plane solution" anchor="simple-ip-solution">
-      <t> This section is the placeholder for the conclusion discussed during IETF 101 and 102.
+      <t>
+ This section is the placeholder for the conclusion discussed during IETF 101 and 102.
       </t>
       <t>
         [Editor's note: describe the 6 tuple way of identifying DetNet service flows. Also stress
@@ -221,7 +222,7 @@ End System       Node                         Node        End System
         target="mapping-tsn"/>.
       </t>
       <t>
-		Note: The sub-network can represent a TSN, MPLS or IP network segment.
+                Note: The sub-network can represent a TSN, MPLS or IP network segment.
       </t>
 
       <figure align="center" anchor="fig_ip_detnet"
@@ -248,9 +249,9 @@ End System       Node            Node         Node        End System
                          ]]></artwork>
       </figure>
       <t>
-        <xref target="fig_ip_detnet"/> illustrates a variant of <xref target="fig_ip_detnet_simple"/>, 
-		with an MPLS based DetNet network as a sub-network between the relay nodes.
-		It shows a more complex
+        <xref target="fig_ip_detnet"/> illustrates a variant of <xref target="fig_ip_detnet_simple"/>,
+        with an MPLS based DetNet network as a sub-network between the relay nodes.
+        It shows a more complex
         DetNet enabled IP network where an IP flow is mapped to one or
         more PWs and MPLS (TE) LSPs.  The end systems still originate IP
         encapsulated traffic that is identified as DetNet flows.  The
@@ -300,16 +301,21 @@ End System       Node                        Node         End System
         identification.
       </t>
       <t>
-		Native IP and DetNet IP packets are identical on the wire. From data plane perspective the only differece is
-		that DetNet IP packets have on each DetNet node an associated DetNet specific data structure, what defines 
-		flow related characteristics and required forwarding functions. 
-		Edge Nodes MUST provide a Service Proxy entity that "associates" the DetNet flows and native flows at the 
-		edge of the DetNet domain. It ensures that the DN Flow is properly served at the Edge node (and inside the domain).
+        Native IP and DetNet IP packets are identical on the wire. From data
+        plane perspective the only differece is that DetNet IP packets have on
+        each DetNet node an associated DetNet specific data structure, what
+        defines flow related characteristics and required forwarding
+        functions.  Edge Nodes MUST provide a Service Proxy entity that
+        "associates" the DetNet flows and native flows at the edge of the
+        DetNet domain. It ensures that the DN Flow is properly served at the
+        Edge node (and inside the domain).
       </t>
       <t>
-		Note: Serving TSN end systems over DetNet enabled IP networks is not explicitly described in this document. 
-		TSN flows can be encapsulated in IP packets by an IP End System or by an IP DetNet End System, what results in a 
-		corresponding native IP flow or DetNet flow. Any details of such encapsulations are out-of-scope here.
+        Note: Serving TSN end systems over DetNet enabled IP networks is not
+        explicitly described in this document.  TSN flows can be encapsulated
+        in IP packets by an IP End System or by an IP DetNet End System, what
+        results in a corresponding native IP flow or DetNet flow. Any details
+        of such encapsulations are out-of-scope here.
       </t>
 
     </section>
@@ -325,55 +331,64 @@ End System       Node                        Node         End System
       </t>
 
       <section title="DetNet IP Flow Identification" anchor="sec:ipflow">
-	  
+
       <section title="Flow-ID related requirements">
         <t>
           Two major groups of scenarios can be distinguished which require flow
           identification during transport:
         </t>
-        <t><list style="numbers">
-          <t>DetNet function related scenarios:
+        <t>
+<list style="numbers">
+          <t>
+DetNet function related scenarios:
           <list style="hanging">
             <t hangText="Congestion protection and latency control:">
             <vspace blankLines="1"/>
             Usage of allocated resources (queuing, policing, shaping) to ensure
             that the congestion-related loss and latency/jitter requirements of
-            a DetNet flow are met.</t> 		<t>Explicit routes: a reservation that
-            maps a flow to a specific path, which also limits miss-ordering and
-            jitter. </t>
-            
+            a DetNet flow are met.</t>
+            <t>
+              Explicit routes: a reservation that maps a flow to a specific
+              path, which also limits miss-ordering and jitter.
+            </t>
+
             <t hangText="Service protection:"> <vspace blankLines="1"/>
             Which in the case of this document
             translates to changing the explicit path after a failure is
             detected while maintaining the required DetNet service
             characteristics. Path changes, even in the case of failure
-            recovery, can lead to the out of order delivery of data.</t>  	<t>Note: 
-			DetNet PREOF is not provided by the mechanisms defined in this 
-			document.</t> 
-			
-			<t hangText="Load sharing:"> <vspace blankLines="1"/>
-			Load sharing is not recommended for packets of the same DetNet flow. 
-			The spreading of a single DetNet flow across multiple paths,
+            recovery, can lead to the out of order delivery of data.</t>
+            <t>
+              Note: DetNet PREOF is not provided by the mechanisms defined in
+              this document.
+            </t>
+
+            <t hangText="Load sharing:"> <vspace blankLines="1"/>
+            Load sharing is not recommended for packets of the same DetNet flow.
+            The spreading of a single DetNet flow across multiple paths,
             e.g., via ECMP or UCMP, also impacts ordering and end-to-end jitter, and as
             such use of multiple paths for support of a single DetNet flow is is
-            out of scope this document.</t>
+            out of scope this document.
+            </t>
           </list>
           </t>
-          <t>OAM function related scenarios:
-          <list style="hanging">
-            <t hangText="Troubleshooting:"> <vspace blankLines="1"/>
-            For example, identify misbehaving flows.</t>
-
-            <t hangText="Recognize flow(s) for analytics:"><vspace blankLines="1"/>
-            For example, increase counters.</t>
-            
-            <t hangText="Correlate events with flows:"><vspace blankLines="1"/>
-            For example, volume above threshold.</t>
+          <t>
+            OAM function related scenarios:
+            <list style="hanging">
+              <t hangText="Troubleshooting:"> <vspace blankLines="1"/>
+              For example, identify misbehaving flows.
+              </t>
+              <t hangText="Recognize flow(s) for analytics:"><vspace blankLines="1"/>
+              For example, increase counters.
+              </t>
+              <t hangText="Correlate events with flows:"><vspace blankLines="1"/>
+              For example, volume above threshold.
+              </t>
           </list>
           </t>
         </list></t>
       </section>
-	  
+
       <section title="DetNet IP Flow-ID" anchor="sec:ipflowid">
         <t>
           DetNet IP flows are identified based on IP, both IPv4 <xref
@@ -389,8 +404,8 @@ End System       Node                        Node         End System
           based longest match, and ranges can also be used.
         </t>
         <t>
-          Note: using IP multicast destination address is also allowed 
-		  within the 6-tuple.
+          Note: using IP multicast destination address is also allowed within
+          the 6-tuple.
         </t>
 
         <t>
@@ -403,27 +418,24 @@ End System       Node                        Node         End System
         </t>
       </section>
      </section>
-      
+
       <section title="End-system specific considerations">
         <t>
-          Data-flows requiring DetNet service are generated and
-          terminated on end systems.  
-		  This document deals only with IP end systems. 
-		  The protocols used by an IP end system are specific to an application and  
-		  end systems peer with end systems using the same application
-          encapsulation format.
-		  This said, DetNet's use of 6-tuple IP flow identification means
-          that DetNet must be aware of not only the format of the IP
-          header, but also of the next protocol carried within an IP
-          packet.
+          Data-flows requiring DetNet service are generated and terminated on
+          end systems.  This document deals only with IP end systems.  The
+          protocols used by an IP end system are specific to an application
+          and end systems peer with end systems using the same application
+          encapsulation format.  This said, DetNet's use of 6-tuple IP flow
+          identification means that DetNet must be aware of not only the
+          format of the IP header, but also of the next protocol carried
+          within an IP packet.
         </t>
         <t>
-         When IP end systems are DetNet aware, no application-level or
-         service-level proxy functions are needed inside the DetNet domain.
-		 For DetNet unaware IP end systems service-level proxy functions are 
-		 needed inside the DetNet domain.
-		</t>
-
+          When IP end systems are DetNet aware, no application-level or
+          service-level proxy functions are needed inside the DetNet domain.
+          For DetNet unaware IP end systems service-level proxy functions are
+          needed inside the DetNet domain.
+        </t>
         <t>
           End systems need to ensure that DetNet service requirements are met
           when processing packets associated with a DetNet flow.  When
@@ -446,22 +458,28 @@ End System       Node                        Node         End System
           transport protocols (e.g., TCP/UDP/IPsec) which can be used to
           identify 6-tuple protocol ports.
         </t>
-        <t>From a connection type perspective two scenarios are identified:
-        <list style="numbers">
-          <t>DN attached: end system is directly connected to an
-          edge node or end system is behind a sub-network. (See ES1 and ES2 in figure below) </t>
-          <t>DN integrated: end system is part of the DetNet domain. (See ES3 in figure below) </t>
-        </list>
+        <t>
+          From a connection type perspective two scenarios are identified:
+          <list style="numbers">
+            <t>
+              DN attached: end system is directly connected to an edge node or
+              end system is behind a sub-network. (See ES1 and ES2 in figure
+              below)
+            </t>
+            <t>
+              DN integrated: end system is part of the DetNet domain. (See ES3
+              in figure below)
+            </t>
+          </list>
         </t>
 
-        <t> 
-         L3 (IP) end systems may use any of these connection types.
-         DetNet domain MUST allow communication between any end-systems using the same encapsulation format, 
-		 independent of their connection type and
-         DetNet capability. DN attached end systems have no knowledge 
-		 about the DetNet domain and its encapsulation format. 
-		 See <xref target="fig_es_con_types"/> for
-         L3 end system connection scenarios.
+        <t>
+          L3 (IP) end systems may use any of these connection types.  DetNet
+          domain MUST allow communication between any end-systems using the
+          same encapsulation format, independent of their connection type and
+          DetNet capability. DN attached end systems have no knowledge about
+          the DetNet domain and its encapsulation format.  See <xref
+          target="fig_es_con_types"/> for L3 end system connection scenarios.
         </t>
 
         <figure title="Connection types of L3 end systems" anchor="fig_es_con_types">
@@ -493,16 +511,16 @@ End System       Node                        Node         End System
             required traffic treatment is provided both on the node and
             on any attached sub-network.
           </t>
-            <t>
-              This solution provides DetNet functions end to end, but does so on
-              a per link and sub-network basis.  Congestion protection and
-              latency control and the resource allocation (queuing, policing,
-              shaping) are supported using the underlying link / sub net
-              specific mechanisms.  However, service protections (packet
-              replication and packet elimination functions) are not provided at
-              the DetNet layer end to end.  But such service protection can be
-              provided on a per underlying L2 link and sub-network basis.
-            </t>
+          <t>
+            This solution provides DetNet functions end to end, but does so on
+            a per link and sub-network basis.  Congestion protection and
+            latency control and the resource allocation (queuing, policing,
+            shaping) are supported using the underlying link / sub net
+            specific mechanisms.  However, service protections (packet
+            replication and packet elimination functions) are not provided at
+            the DetNet layer end to end.  But such service protection can be
+            provided on a per underlying L2 link and sub-network basis.
+          </t>
 
             <figure title="Encapsulation of DetNet Routing in simplified IP service L3 end-systems"
                     anchor="fig_simple_iprouting">
@@ -518,27 +536,29 @@ DetNet                    |L2/SbN|          |L2/SbN|
             </artwork></figure>
 
             <t>
-              The DetNet Service Flow MUST be mapped to the link /
-              sub-network
-              specific resources using an underlying system specific means. This
-              implies each DetNet aware node on path MUST look into the
-              transported DetNet Service Flow packet and utilize e.g., a 5-
-              (or 6-) tuple to find out the required mapping within a node.  
+              The DetNet Service Flow MUST be mapped to the link / sub-network
+              specific resources using an underlying system specific
+              means. This implies each DetNet aware node on path MUST look
+              into the transported DetNet Service Flow packet and utilize
+              e.g., a 5- (or 6-) tuple to find out the required mapping within
+              a node.
             </t>
             <t>
-			  As noted earlier, the Service Protection is done within each link /
-              sub-network independently using the domain specific mechanisms (due
-              the lack of a unified end to end sequencing information that would
-              be available for intermediate nodes). 
-             Therefore, service protection (if any) cannot be provided end-to-end, only within
-			 sub-networks. This is shown for a three sub-network scenario in <xref target="fig_pref_in_subnets"/>,
-			 where each sub-network can provide service protection between its borders.
-			</t>
+              As noted earlier, the Service Protection is done within each
+              link / sub-network independently using the domain specific
+              mechanisms (due the lack of a unified end to end sequencing
+              information that would be available for intermediate nodes).
+              Therefore, service protection (if any) cannot be provided
+              end-to-end, only within sub-networks. This is shown for a three
+              sub-network scenario in <xref target="fig_pref_in_subnets"/>,
+              where each sub-network can provide service protection between
+              its borders.
+            </t>
 
-  <figure title="Replication and elimination in sub-networks for DetNet IP networks" anchor="fig_pref_in_subnets">
-  <artwork align="center"><![CDATA[
-                                   ______   
-                         ____     /      \__ 
+            <figure title="Replication and elimination in sub-networks for DetNet IP networks" anchor="fig_pref_in_subnets">
+              <artwork align="center"><![CDATA[
+                                   ______
+                         ____     /      \__
             ____        /     \__/          \___   ______
 +----+   __/    +======+                       +==+      \     +----+
 |src |__/ SubN1  )     |                       |  \ SubN3 \____| dst|
@@ -553,17 +573,15 @@ DetNet                    |L2/SbN|          |L2/SbN|
 |src |----R   E----------R     +---+        E------R     E------+ dst|
 +----+    |   |          |     |            |      |     |      +----+
           +---+          +-----R------------+      +-----+
-                         
+
   ]]>
-    </artwork></figure>
-			
-			<t>
-			If end to end service
-              protection is desired that can be implemented, for example, by the
-              DetNet end systems using Layer-4 (L4) transport protocols or
-              application protocols. However, these are out of scope of this
-              document.
-			</t>
+            </artwork></figure>
+            <t>
+              If end to end service protection is desired that can be
+              implemented, for example, by the DetNet end systems using
+              Layer-4 (L4) transport protocols or application
+              protocols. However, these are out of scope of this document.
+            </t>
         </section>
       </section>
 
@@ -773,7 +791,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
 
     <!-- ===================================================================== -->
     <section title="Time synchronization">
-     <t>   
+     <t>
       While time synchronization can be important both from the perspective of
       operating the DetNet network itself and from the perspective of
       DetNet-based applications, time synchronization is outside the
@@ -851,20 +869,18 @@ DetNet                    |L2/SbN|          |L2/SbN|
          level.]
         </t>
         <t>
-          Some DetNet applications generate bidirectional traffic.
-          While the DetNet data plane must support bidirectional DetNet flows, there
-          are no special bidirectional features with respect to the data plane
-          other than need for the two directions take the same
-          paths. That is to say that  bidirectional DetNet flows are
-          solely represented at the management and control plane levels,
-          without specific support or knowledge within the DetNet data plane.
-          Fate sharing and associated vs co-routed bidirectional flows can be
-          managed at the control level.
-          Note,
-          that there is no stated requirement for bidirectional DetNet flows
-          to be supported using the same 6-tuple in each direction.
-          Control mechanisms will need to support such bidirectional flows
-          but such mechanisms are out of scope of this
+          Some DetNet applications generate bidirectional traffic.  While the
+          DetNet data plane must support bidirectional DetNet flows, there are
+          no special bidirectional features with respect to the data plane
+          other than need for the two directions take the same paths. That is
+          to say that bidirectional DetNet flows are solely represented at the
+          management and control plane levels, without specific support or
+          knowledge within the DetNet data plane.  Fate sharing and associated
+          vs co-routed bidirectional flows can be managed at the control
+          level.  Note, that there is no stated requirement for bidirectional
+          DetNet flows to be supported using the same 6-tuple in each
+          direction.  Control mechanisms will need to support such
+          bidirectional flows but such mechanisms are out of scope of this
           document.  An example control plane solution for MPLS can be found
           in <xref target="RFC7551"/>.
         </t>
@@ -904,17 +920,19 @@ DetNet                    |L2/SbN|          |L2/SbN|
       </t>
 
       <t>
-      This section covers how IP DetNet flows operate over an IEEE 802.1 TSN sub-network. 
-      <xref target="fig_ip_detnet_to_tsn"/> illustrates such a scenario, where two IP (DetNet)
-	  nodes are interconnected by a TSN sub-network. Node-1 is single homed and Node-2 is dual-homed.
-	  IP nodes can be (1) IP DetNet End System, (2) IP DetNet Edge or Relay node or (3) IP End System.
-	  </t>
+        This section covers how IP DetNet flows operate over an IEEE 802.1 TSN
+        sub-network.  <xref target="fig_ip_detnet_to_tsn"/> illustrates such a
+        scenario, where two IP (DetNet) nodes are interconnected by a TSN
+        sub-network. Node-1 is single homed and Node-2 is dual-homed.  IP
+        nodes can be (1) IP DetNet End System, (2) IP DetNet Edge or Relay
+        node or (3) IP End System.
+      </t>
 
 <figure align="center" anchor="fig_ip_detnet_to_tsn"
               title="DetNet (DN) Enabled IP Network over a TSN sub-network">
 <artwork><![CDATA[
     IP (DetNet)                  IP (DetNet)
-      Node-1                       Node-2 
+      Node-1                       Node-2
 
    ...........                  ...........
 <--: Service :-- DetNet flow ---: Service :-->
@@ -922,27 +940,27 @@ DetNet                    |L2/SbN|          |L2/SbN|
    |Transport|                  |Transport|
    +-------.-+    <-TSN Str->   +-.-----.-+
             \      ,-------.     /     /
-             +----[ TSN-Sub ]---+     / 
-                  [ Network ]--------+      
-                   `-------'            
+             +----[ TSN-Sub ]---+     /
+                  [ Network ]--------+
+                   `-------'
 <----------------- DetNet IP ---------------->
 ]]></artwork>
       </figure>
-      
-		<t>
+
+                <t>
           The Time-Sensitive Networking (TSN) Task Group of the IEEE 802.1 Working Group have
           defined (and are defining) a number of amendments to <xref target="IEEE8021Q">IEEE 802.1Q</xref>
           that provide zero congestion loss and bounded latency in bridged networks. Furthermore
           <xref target="IEEE8021CB">IEEE 802.1CB</xref> defines frame replication and elimination
           functions for reliability that should prove both compatible with and useful to, DetNet networks.
-		  All these functions have to identify flows those require TSN treatment.
+                  All these functions have to identify flows those require TSN treatment.
           </t><t>
           As is the case for DetNet, a Layer 2 network node such as a bridge may need to
           identify the specific DetNet flow to which a packet belongs in order to provide the
           TSN/DetNet QoS for that packet.  It also may need a CoS marking, such as the
           priority field of an IEEE Std 802.1Q VLAN tag, to give the packet proper service.
           </t>
-<!--          <t>
+          <!--          <t>
            Although the flow identification methods described in <xref
            target="IEEE8021CB">IEEE 802.1CB</xref> are flexible, and in fact,
            include IP 6-tuple identification methods, the baseline TSN standards
@@ -953,183 +971,207 @@ DetNet                    |L2/SbN|          |L2/SbN|
            describes three methods by which a packet sequence number can be
            encoded in an Ethernet frame.
 
-		   TEXT need adjustment, DELETE
-		   
-		   Extract from .1CB Introduction:
-		   ... TSN supports unicast and multicast Streams of packets ...
-		   
-		   The only Sequence encode/decode format specified as required, separately from 
-		   any Stream identification function, is the Redundancy tag (R-TAG, 7.8). In 
-		   addition, two optional formats (7.9, 7.10) are defined.
-		   
-          </t> 
+                   TEXT need adjustment, DELETE
+
+                   Extract from .1CB Introduction:
+                   ... TSN supports unicast and multicast Streams of packets ...
+
+                   The only Sequence encode/decode format specified as required, separately from
+                   any Stream identification function, is the Redundancy tag (R-TAG, 7.8). In
+                   addition, two optional formats (7.9, 7.10) are defined.
+
+          </t>
           <t>
            Ensuring that the proper Ethernet VLAN tag priority and destination
            MAC address are used on a DetNet/TSN packet may require further
            clarification of the customary L2/L3 transformations carried out by
            routers and edge label switches.  Edge nodes may also have to move
            sequence number fields among Layer 2, PW, and IPv6 encapsulations.
-		   
-		   TEXT need adjustment, DELETE
-		   No PW, no edge label switches to be covered here.
+
+                   TEXT need adjustment, DELETE
+                   No PW, no edge label switches to be covered here.
 
         </t>
--->
-		<t>
-		TSN capabilities of the TSN sub-network is made available for IP (DetNet) flows via the protocol 
-		interworking function defined in <xref target="IEEE8021CB">IEEE 802.1CB</xref>. For example,
-		applied on the TSN edge port connected to the IP (DetNet) node it can convert an ingress 
-		unicast IP (DetNet) flow to use a specific multicast destination MAC address and VLAN, in order to
-		direct the packet through a specific path inside the bridged network. A similar interworking
-		pair at the other end of the TSN sub-network would restore the packet to its original 
-		destination MAC address and VLAN.
-		</t>
-		<t> 
-		Placement of TSN functions depends on the TSN capabilities of nodes. IP (DetNet) Nodes may or 
-		may not support TSN functions. For a given TSN Stream (i.e., DetNet flow)
-		an IP (DetNet) node is treated as a Talker or a Listener inside the TSN sub-network.
-        </t>
+          -->
+          <t>
+            TSN capabilities of the TSN sub-network is made available for IP
+            (DetNet) flows via the protocol interworking function defined in
+            <xref target="IEEE8021CB">IEEE 802.1CB</xref>. For example,
+            applied on the TSN edge port connected to the IP (DetNet) node it
+            can convert an ingress unicast IP (DetNet) flow to use a specific
+            multicast destination MAC address and VLAN, in order to direct the
+            packet through a specific path inside the bridged network. A
+            similar interworking pair at the other end of the TSN sub-network
+            would restore the packet to its original destination MAC address
+            and VLAN.
+          </t>
+          <t>
+            Placement of TSN functions depends on the TSN capabilities of
+            nodes. IP (DetNet) Nodes may or may not support TSN functions. For
+            a given TSN Stream (i.e., DetNet flow) an IP (DetNet) node is
+            treated as a Talker or a Listener inside the TSN sub-network.
+          </t>
 
-      <section title="TSN Stream ID Mapping">
-        <t>
-        IP DetNet Flow and TSN Stream mapping is based on the active Stream Identification function, 
-		that operates at the frame level. <xref target="IEEE8021CB">IEEE 802.1CB</xref> defines an 
-		Active Destination MAC and VLAN Stream identification function, what can replace some Ethernet 
-		header fields namely (1) the destination MAC-address, (2) the VLAN-ID and (3) priority parameters 
-		with alternate values. Replacement is provided for the frame passed down the stack 
-		from the upper layers or up the stack from the lower layers. 
-        </t>
-        <t>
-		Active Destination MAC and VLAN Stream identification can be used within a Talker to set flow 
-		identity or a Listener to recover the original addressing information. It can be used also in 
-		a TSN bridge that is providing translation as a proxy service for an End System. As a result IP (DetNet) flows 
-		can be mapped to use a particular {MAC-address, VLAN} pair to match the Stream in the TSN sub-network.
-		</t>
-		<t>
-		From the TSN sub-network perspective IP DetNet nodes without any TSN functions can be treated as TSN-unaware 
-		Talker or Listener.	In such cases relay nodes in the TSN sub-network MUST modify the Ethernet encapsulation of 
-		the IP DetNet flow (e.g., MAC translation, VLAN-ID setting, Sequence number addition, etc.) to allow proper 
-		TSN specific handling of the flow inside the sub-network. This is illustrated in <xref target="fig_ip_without_tsn"/>.
-		</t>
-		
-<figure align="center" anchor="fig_ip_without_tsn"
-              title="IP (DetNet) node without TSN functions">
-<artwork><![CDATA[
+          <section title="TSN Stream ID Mapping">
+            <t>
+              IP DetNet Flow and TSN Stream mapping is based on the active
+              Stream Identification function, that operates at the frame
+              level. <xref target="IEEE8021CB">IEEE 802.1CB</xref> defines an
+              Active Destination MAC and VLAN Stream identification function,
+              what can replace some Ethernet header fields namely (1) the
+              destination MAC-address, (2) the VLAN-ID and (3) priority
+              parameters with alternate values. Replacement is provided for
+              the frame passed down the stack from the upper layers or up the
+              stack from the lower layers.
+            </t>
+            <t>
+              Active Destination MAC and VLAN Stream identification can be
+              used within a Talker to set flow identity or a Listener to
+              recover the original addressing information. It can be used also
+              in a TSN bridge that is providing translation as a proxy service
+              for an End System. As a result IP (DetNet) flows can be mapped
+              to use a particular {MAC-address, VLAN} pair to match the Stream
+              in the TSN sub-network.
+            </t>
+            <t>
+              From the TSN sub-network perspective IP DetNet nodes without any
+              TSN functions can be treated as TSN-unaware Talker or Listener.
+              In such cases relay nodes in the TSN sub-network MUST modify the
+              Ethernet encapsulation of the IP DetNet flow (e.g., MAC
+              translation, VLAN-ID setting, Sequence number addition, etc.) to
+              allow proper TSN specific handling of the flow inside the
+              sub-network. This is illustrated in <xref
+              target="fig_ip_without_tsn"/>.
+            </t>
+
+            <figure align="center" anchor="fig_ip_without_tsn"
+                    title="IP (DetNet) node without TSN functions">
+              <artwork><![CDATA[
     IP (DetNet)
       Node-1
-   <---------> 
-   
+   <--------->
+
    ...........
 <--: Service :-- DetNet flow ------------------
    +---------+
    |Transport|
-   +---------+    +---------------+  
+   +---------+    +---------------+
    |   L2    |    | L2 Relay with |<--- TSN ----
    |         |    | TSN function  |    Stream
    +----.----+    +--.---------.--+
          \__________/           \______
-		 
-   TSN-unaware        
+
+   TSN-unaware
     Talker /          TSN-Bridge
     Listener             Relay
                 <-------- TSN sub-network -------
 ]]></artwork>
-      </figure>
+            </figure>
 
-		<t>
-		IP (DetNet) nodes being TSN-aware can be treated as a combination of a TSN-unaware Talker/Listener and a TSN-Relay, as shown in
-		<xref target="fig_ip_with_tsn"/>. 
-		In such cases the IP (DetNet) node MUST provide the TSN sub-network specific Ethernet encapsulation over the link(s)
-		towards the sub-network. An TSN-aware IP (DetNet) node MUST support the following TSN components:
-        
-        <list style="numbers">
-          <t>For recognizing flows:
-			<list style="symbols">
-			<t>Stream Identification</t>
-			</list>
-		  </t>
-          <t>For FRER used inside the TSN domain, additonaly:
-			<list style="symbols">
-			<t>Sequencing function</t>
-			<t>Sequence encode/decode function</t>
-			</list>
-		  </t>
-          <t>For FRER when the node is a replication or elimination point, additionally:
-			<list style="symbols">
-			<t>Stream splitting function</t>
-			<t>Individual recovery function</t>
-			</list>
-		  </t>
-        </list>
-        </t>
+            <t>
+              IP (DetNet) nodes being TSN-aware can be treated as a
+              combination of a TSN-unaware Talker/Listener and a TSN-Relay, as
+              shown in <xref target="fig_ip_with_tsn"/>.  In such cases the IP
+              (DetNet) node MUST provide the TSN sub-network specific Ethernet
+              encapsulation over the link(s) towards the sub-network. An
+              TSN-aware IP (DetNet) node MUST support the following TSN
+              components:
+              <list style="numbers">
+                <t>
+                  For recognizing flows:
+                  <list style="symbols">
+                    <t>Stream Identification</t>
+                  </list>
+                </t>
+                <t>
+                  For FRER used inside the TSN domain, additonaly:
+                  <list style="symbols">
+                    <t>Sequencing function</t>
+                    <t>Sequence encode/decode function</t>
+                  </list>
+                </t>
+                <t>
+                  For FRER when the node is a replication or elimination point, additionally:
+                  <list style="symbols">
+                    <t>Stream splitting function</t>
+                    <t>Individual recovery function</t>
+                  </list>
+                </t>
+              </list>
+            </t>
 
-        <t>
-          [Editor's note: Should we added here requirements regarding IEEE 802.1Q C-VLAN component?]
-        </t>
+            <t>
+              [Editor's note: Should we added here requirements regarding IEEE 802.1Q C-VLAN component?]
+            </t>
 
-		<figure align="center" anchor="fig_ip_with_tsn"
-              title="IP (DetNet) node with TSN functions">
-<artwork><![CDATA[
+            <figure align="center" anchor="fig_ip_with_tsn"
+                    title="IP (DetNet) node with TSN functions">
+              <artwork><![CDATA[
 
                 IP (DetNet)
-				  Node-2
-   <----------------------------------> 
-   
+                                  Node-2
+   <---------------------------------->
+
    ...........
 <--: Service :-- DetNet flow ------------------
    +---------+
    |Transport|
-   +---------+    +---------------+  
+   +---------+    +---------------+
    |   L2    |    | L2 Relay with |<--- TSN ---
    |         |    | TSN function  |    Stream
    +----.----+    +--.------.---.-+
          \__________/        \   \______
                               \_________
-   TSN-unaware        
+   TSN-unaware
     Talker /          TSN-Bridge
     Listener             Relay
                                       <----- TSN Sub-network -----
    <------ TSN-aware Tlk/Lstn ------->
 ]]></artwork>
-      </figure>
+            </figure>
 
-        <t>
-		A Stream identification component MUST be able to instantiate the following functions 
-		(1) Active Destination MAC and VLAN Stream identification function, (2) IP Stream identification 
-		function and (3) the related managed objects in Clause 9 of <xref target="IEEE8021CB">IEEE 802.1CB</xref>.
-		IP Stream identification function provides a 6-tuple match.  
-        </t>
-        <t>
-		The Sequence encode/decode function MUST support the Redundancy tag (R-TAG) format as per Clause 7.8 of 
-		<xref target="IEEE8021CB">IEEE 802.1CB</xref>.
-        </t>
-      </section>
-      <section title="TSN Usage of FRER">
-        <t>
-          TSN Streams supporting DetNet flows may use Frame
-          Replication and Elimination for Redundancy (FRER) [802.1CB] based on
-          the loss service requirements of the TSN Stream, which is derived from
-          the DetNet service requirements of the DetNet mapped flow.  The
-          specific operation of FRER is not modified by the use of DetNet and
-          follows  <xref target="IEEE8021CB">IEEE 802.1CB</xref>.
-        </t>
-        <t>
-          FRER function and the provided service recovery is available only within the TSN 
-		  sub-network (as shown in <xref target="fig_pref_in_subnets"/>) as the Stream-ID and the 
-		  TSN sequence number are not valid outside the sub-network. 
-		  An IP (DetNet) node represents a L3 border and as such it terminates all related information 
-		  elements encoded in the L2 frames.
-		</t>
-      </section>
-      <section title="Management and Control Implications">
-        <t>
-          [Editor's note: This section is TBD
-          Covers Creation, mapping, removal of TSN Stream IDs, related
-          parameters and,when needed, configuration of FRER. Supported
-          by management/control plane.]
-        </t>
-      </section>
-    </section>
+            <t>
+              A Stream identification component MUST be able to instantiate
+              the following functions (1) Active Destination MAC and VLAN
+              Stream identification function, (2) IP Stream identification
+              function and (3) the related managed objects in Clause 9 of
+              <xref target="IEEE8021CB">IEEE 802.1CB</xref>.  IP Stream
+              identification function provides a 6-tuple match.
+            </t>
+            <t>
+              The Sequence encode/decode function MUST support the Redundancy
+              tag (R-TAG) format as per Clause 7.8 of <xref
+              target="IEEE8021CB">IEEE 802.1CB</xref>.
+            </t>
+          </section>
+          <section title="TSN Usage of FRER">
+            <t>
+              TSN Streams supporting DetNet flows may use Frame Replication
+              and Elimination for Redundancy (FRER) [802.1CB] based on the
+              loss service requirements of the TSN Stream, which is derived
+              from the DetNet service requirements of the DetNet mapped flow.
+              The specific operation of FRER is not modified by the use of
+              DetNet and follows <xref target="IEEE8021CB">IEEE
+              802.1CB</xref>.
+            </t>
+            <t>
+              FRER function and the provided service recovery is available
+              only within the TSN sub-network (as shown in <xref
+              target="fig_pref_in_subnets"/>) as the Stream-ID and the TSN
+              sequence number are not valid outside the sub-network.  An IP
+              (DetNet) node represents a L3 border and as such it terminates
+              all related information elements encoded in the L2 frames.
+            </t>
+          </section>
+          <section title="Management and Control Implications">
+            <t>
+              [Editor's note: This section is TBD
+              Covers Creation, mapping, removal of TSN Stream IDs, related
+              parameters and,when needed, configuration of FRER. Supported
+              by management/control plane.]
+            </t>
+          </section>
+        </section>
 
     <!-- ===================================================================== -->
 
@@ -1146,15 +1188,18 @@ DetNet                    |L2/SbN|          |L2/SbN|
 
 
     <section anchor="iana" title="IANA considerations">
-      <t>TBD.
+      <t>
+TBD.
       </t>
     </section>
 
     <section anchor="contributors" title="Contributors">
-      <t>RFC7322 limits the number of authors listed on the front page of a draft to a maximum of 5,
-      far fewer than the 20 individuals below who made important contributions to this draft. The
-      editor wishes to thank and acknowledge each of the following authors for contributing text to
-      this draft. See also <xref target="acks"/>.
+      <t>
+        RFC7322 limits the number of authors listed on the front page of a
+        draft to a maximum of 5, far fewer than the 20 individuals below who
+        made important contributions to this draft. The editor wishes to thank
+        and acknowledge each of the following authors for contributing text to
+        this draft. See also <xref target="acks"/>.
       </t>
       <figure> <artwork><![CDATA[
    Loa Andersson
@@ -1205,7 +1250,8 @@ DetNet                    |L2/SbN|          |L2/SbN|
     <section anchor="acks" title="Acknowledgements">
       <t>The author(s) ACK and NACK.
       </t>
-      <t> The following people were part of the DetNet Data Plane Solution Design Team:
+      <t>
+        The following people were part of the DetNet Data Plane Solution Design Team:
       <list style="bullets">
         <t>Jouni Korhonen</t>
         <t>J&aacute;nos Farkas</t>
@@ -1285,7 +1331,8 @@ DetNet                    |L2/SbN|          |L2/SbN|
       <reference anchor="IEEE8021Q"
                  target="http://standards.ieee.org/about/get/">
         <front>
-          <title>Standard for Local and metropolitan area networks--Bridges and Bridged Networks (IEEE Std 802.1Q-2014)</title>
+          <title>Standard for Local and metropolitan area networks--Bridges
+          and Bridged Networks (IEEE Std 802.1Q-2014)</title>
           <author>
             <organization>IEEE 802.1</organization>
           </author>
@@ -1297,7 +1344,8 @@ DetNet                    |L2/SbN|          |L2/SbN|
       <reference anchor="IEEE8021CB"
                  target="http://www.ieee802.org/1/files/private/cb-drafts/d2/802-1CB-d2-1.pdf">
         <front>
-          <title>Draft Standard for Local and metropolitan area networks - Seamless Redundancy</title>
+          <title>Draft Standard for Local and metropolitan area networks -
+          Seamless Redundancy</title>
           <author initials="N. F." surname="Finn" fullname="Norman Finn">
             <organization>IEEE 802.1</organization>
           </author>
@@ -1310,7 +1358,8 @@ DetNet                    |L2/SbN|          |L2/SbN|
       <reference anchor="G.8275.1"
                  target="https://www.itu.int/rec/T-REC-G.8275.1/en">
         <front>
-          <title>Precision time protocol telecom profile for phase/time synchronization with full timing support from the network</title>
+          <title>Precision time protocol telecom profile for phase/time
+          synchronization with full timing support from the network</title>
           <author>
             <organization>International Telecommunication Union</organization>
           </author>
@@ -1322,7 +1371,8 @@ DetNet                    |L2/SbN|          |L2/SbN|
       <reference anchor="G.8275.2"
                  target="https://www.itu.int/rec/T-REC-G.8275.2/en">
         <front>
-          <title>Precision time protocol telecom profile for phase/time synchronization with partial timing support from the network</title>
+          <title>Precision time protocol telecom profile for phase/time
+          synchronization with partial timing support from the network</title>
           <author>
             <organization>International Telecommunication Union</organization>
           </author>
