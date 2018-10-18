@@ -859,7 +859,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
         related information requirements is included.  Conformance
         language is not used in the summary as it applies to future
         mechanisms such as those that may be provided in YANG models
-        [REF-TBD].
+        [YANG-REF-TBD].
       </t>
       <section anchor="ip-flow-id"
                title="DetNet IP Flow Identification Procedures">
@@ -1038,9 +1038,9 @@ DetNet                    |L2/SbN|          |L2/SbN|
               and the ability to ignore this field, e.g., via
               configuration of the value zero (0), is desirable.</t>
               <t>IPv4 Type of Service and IPv6 Traffic Class Fields.</t>
-              <t>IPv4 Type of Service and IPv6 Traffic Class Field
-              Bitmask, where a zero (0) effectively means that theses
-              fields are ignored.</t>
+              <t>IPv4 Type of Service and IPv6 Traffic Class Field Bitmask, where a
+              zero (0) effectively means that theses fields are
+              ignored.</t>
               <t>IPv6 flow label field. This field can be optionally used
               for matching.  When used, can be exclusive of matching
               against the next header field.</t>
@@ -1048,8 +1048,6 @@ DetNet                    |L2/SbN|          |L2/SbN|
               required. Port ranges can optionally be used.</t>
               <t>TCP and UDP Destination Port. Exact and wildcard matching is
               required. Port ranges can optionally be used.</t>
-              <t>
-              </t>
             </list>
           </t>
           <t>
@@ -1063,34 +1061,64 @@ DetNet                    |L2/SbN|          |L2/SbN|
         </section>
       </section>
 
-      <section anchor="ip-svc" title="DetNet IP Traffic Treatment Procedures">
+      <section anchor="ip-fwd" title="Forwarding Procedures">
         <t>
+          General requirements for IP nodes are defined in <xref
+          target="RFC1122"/>, <xref target="RFC1812"/> and <xref
+          target="RFC6434"/>, and are not modified by this document. The
+          typical next-hop selection process is impacted by DetNet.
+          Specifically, implementations of this document SHALL use
+          management and control information to select the one or more
+          outgoing interfaces and next hops to be used for a packet
+          belonging to a DetNet flow.
         </t>
-        
-        <section anchor="ip-svc-info"
-                 title="Traffic Treatment Management and Control Information">
-          <t>
-            The following summarizes information that is needed to
-            support DetNet traffic treatment:
-            <list style="bullets">
-              <t>TBD</t>
-            </list>
-          </t>
-        </section>
-        
+        <t>
+          The use of multiple paths or links, e.g., ECMP, to support a
+          single DetNet flow will generally be avoided in order to meet
+          DetNet service requirements.
+        </t>
+        <t>
+          The above implies that management and control functions will
+          be defined to support this requirement, e.g., see [YANG-REF-TBD].
+        </t>
       </section>
 
-      <section title="Multi-Path Considerations">
+      <section anchor="ip-svc" title="DetNet IP Traffic Treatment Procedures">
         <t>
-          [Note: talk about implications of ECMP/LAG/parallel links --
-          perhaps just say support for such is not covered in the document.]
+          Implementations if this document MUST ensure that a DetNet
+          flow receives the traffic treatment that is provisioned for it
+          via management and control functions, e.g., via
+          [YANG-REF-TBD].  General information on DetNet service can be
+          found in <xref
+          target="I-D.ietf-detnet-flow-information-model"/>.  Typical
+          mechanisms used to provide different treatment to different
+          flows includes the allocation of system resources (such as
+          queues and buffers) and provisioning or related parameters
+          (such as shaping, and policing). Support can also be provided
+          via an underlying network technology such as MPLS <xref
+          target="I-D.ietf-detnet-dp-sol-mpls"/> and IEEE802.1 TSN <xref
+          target="mapping-tsn"/>.  Other than in the TSN case, the
+          specific mechanisms used by a DetNet node to ensure DetNet
+          service delivery requirements are met for supported DetNet
+          flows is outside the scope of this document.
         </t>
       </section>
 
       <section title="Aggregation Considerations">
         <t>
-          [Editor's note: Aggregation via header wildcards to be added
-          here.  Aggregation via encapsulation is FFS.]
+          The use of prefixes, wildcards, bimasks, and port ranges
+          allows a DetNet node to aggregate DetNet flows.  This
+          aggregation can take place within a single node, when that
+          node maintains state about both the aggregated and component
+          flows.  It can also take place between nodes, where one node
+          maintains state about only flow aggregates while the other
+          node maintains state on all or a portion of the component
+          flows.  In either case, the management or control function that
+          provisions the aggregate flows must ensure that adequate
+          resources are allocated and configured to provide combined
+          service requirements of the component flows.  As DetNet is
+          concerned about latency and jitter, more than just bandwidth
+          needs to be considered.
         </t>
       </section>
 
@@ -1465,6 +1493,7 @@ TBD.
       <?rfc include="reference.RFC.0768"?>
       <?rfc include="reference.RFC.0791"?>
       <?rfc include="reference.RFC.0793"?>
+      <?rfc include="reference.RFC.1122"?>
       <?rfc include="reference.RFC.1812"?>
       <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.2211"?>
@@ -1478,6 +1507,7 @@ TBD.
       <?rfc include="reference.RFC.4303"?>
       <?rfc include="reference.RFC.5462"?>
       <?rfc include="reference.RFC.6003"?>
+      <?rfc include="reference.RFC.6434"?>
       <?rfc include="reference.RFC.7608"?>
       <?rfc include="reference.RFC.8174"?>
       <?rfc include="reference.RFC.8200"?>
@@ -1492,8 +1522,9 @@ TBD.
       <?rfc include="reference.RFC.8040"?>
       <?rfc include="reference.RFC.8169"?>
       <?rfc include="reference.I-D.ietf-detnet-architecture"?>
-      <?rfc include="reference.I-D.ietf-detnet-security"?>
       <?rfc include="reference.I-D.ietf-detnet-dp-sol-mpls"?>
+      <?rfc include="reference.I-D.ietf-detnet-flow-information-model"?>
+      <?rfc include="reference.I-D.ietf-detnet-security"?>
 
       <reference anchor='IEEE1588'>
         <front>
