@@ -1022,7 +1022,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
           <t>
             The following summarizes the set of information that is needed to
             identify an individual DetNet flow:
-            <list style="bullets">
+            <list style="symbols">
               <t>IPv4 and IPv6 source address field.</t>
               <t>IPv4 and IPv6 source address prefix length, where a zero
               (0) value effectively means that the address field is
@@ -1038,9 +1038,9 @@ DetNet                    |L2/SbN|          |L2/SbN|
               and the ability to ignore this field, e.g., via
               configuration of the value zero (0), is desirable.</t>
               <t>IPv4 Type of Service and IPv6 Traffic Class Fields.</t>
-              <t>IPv4 Type of Service and IPv6 Traffic Class Field Bitmask, where a
-              zero (0) effectively means that theses fields are
-              ignored.</t>
+              <t>IPv4 Type of Service and IPv6 Traffic Class Field
+              Bitmask, where a zero (0) effectively means that theses
+              fields are ignored.</t>
               <t>IPv6 flow label field. This field can be optionally used
               for matching.  When used, can be exclusive of matching
               against the next header field.</t>
