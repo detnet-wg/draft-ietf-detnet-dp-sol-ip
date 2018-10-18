@@ -1493,7 +1493,6 @@ TBD.
       <?rfc include="reference.RFC.0768"?>
       <?rfc include="reference.RFC.0791"?>
       <?rfc include="reference.RFC.0793"?>
-      <?rfc include="reference.RFC.1122"?>
       <?rfc include="reference.RFC.1812"?>
       <?rfc include="reference.RFC.2119"?>
       <?rfc include="reference.RFC.2211"?>
@@ -1507,15 +1506,16 @@ TBD.
       <?rfc include="reference.RFC.4303"?>
       <?rfc include="reference.RFC.5462"?>
       <?rfc include="reference.RFC.6003"?>
-      <?rfc include="reference.RFC.6434"?>
       <?rfc include="reference.RFC.7608"?>
       <?rfc include="reference.RFC.8174"?>
       <?rfc include="reference.RFC.8200"?>
     </references>
     <references title="Informative references">
+      <?rfc include="reference.RFC.1122"?>
       <?rfc include="reference.RFC.2205"?>
       <?rfc include="reference.RFC.3670"?>
       <?rfc include="reference.RFC.5777"?>
+      <?rfc include="reference.RFC.6434"?>
       <?rfc include="reference.RFC.7551"?>
       <?rfc include="reference.RFC.7657"?>
       <?rfc include="reference.RFC.7950"?>
