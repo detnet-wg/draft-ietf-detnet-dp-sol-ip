@@ -873,14 +873,14 @@ DetNet                    |L2/SbN|          |L2/SbN|
         </t>
         <t>
           The configuration and control information used to identify an
-          individual DetNet flow MUST be ordered by and implementation.
+          individual DetNet flow MUST be ordered by an implementation.
           Implementations MUST support a fixed order when identifying
           flows, and MUST identify a DetNet flow by the first set of
           matching flow information.
         </t>
         <t>
           Implementations of this document MUST support DetNet flow
-          identification MUST when the implementation is acting as a
+          identification when the implementation is acting as a
           DetNet end systems, a relay node or as an edge node.
         </t>
         
@@ -910,6 +910,10 @@ DetNet                    |L2/SbN|          |L2/SbN|
               <xref target="RFC7608"/>. Note that a prefix length of
               zero (0) effectively means that the field is ignored.
             </t>
+            <t>
+              Note: using IP multicast destination address is also allowed.
+            </t>
+			
           </section>
           <section anchor="nxt-proto-field"
                    title="IPv4 Protocol and IPv6 Next Header Fields">
@@ -943,7 +947,8 @@ DetNet                    |L2/SbN|          |L2/SbN|
           <section title="IPv6 Flow Label Field">
             <t>
               [Authors note: the use of the IPv6 flow label is TBD this
-              section requires discussion.]
+              section requires discussion. Flow label based mapping requires 
+			  src/dst adress mapping as well.]
             </t>
             <t>
               Implementations of this document SHOULD support
@@ -1381,6 +1386,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
               [Editor's note: This section is TBD - covers required
               behavior of DetNet node using a TSN underlay.]
             </t>
+          </section>
           <section title="Management and Control Implications">
             <t>
               [Editor's note: This section is TBD
