@@ -29,6 +29,6 @@ Contributions.
 * For details see: https://travis-ci.org/detnet-wg/draft-ietf-detnet-dp-sol-ip
 * For results on past commits see: https://travis-ci.org/detnet-wg/draft-ietf-detnet-dp-sol-ip/builds
 
-## Formatted versions: [text](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?url=https://raw.githubusercontent.com/detnet-wg/draft-ietf-detnet-dp-sol-ip/master/draft-ietf-detnet-dp-sol-ip-01.xml) or  [html](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?url=https://raw.githubusercontent.com/detnet-wg/draft-ietf-detnet-dp-sol-ip/master/draft-ietf-detnet-dp-sol-ip-01.xml&modeAsFormat=html%2Fascii)
+## Formatted versions: [text](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?url=https://raw.githubusercontent.com/detnet-wg/draft-ietf-detnet-dp-sol-ip/master/draft-ietf-detnet-dp-sol-ip-02.xml) or  [html](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?url=https://raw.githubusercontent.com/detnet-wg/draft-ietf-detnet-dp-sol-ip/master/draft-ietf-detnet-dp-sol-ip-02.xml&modeAsFormat=html%2Fascii)
 
-## idnits: [results](https://tools.ietf.org/idnits?url=https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?url=https://raw.githubusercontent.com/detnet-wg/draft-ietf-detnet-dp-sol-ip/master/draft-ietf-detnet-dp-sol-ip-01.xml&modeAsFormat=html%2Fascii)
+## idnits: [results](https://tools.ietf.org/idnits?url=https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?url=https://raw.githubusercontent.com/detnet-wg/draft-ietf-detnet-dp-sol-ip/master/draft-ietf-detnet-dp-sol-ip-02.xml&modeAsFormat=html%2Fascii)
