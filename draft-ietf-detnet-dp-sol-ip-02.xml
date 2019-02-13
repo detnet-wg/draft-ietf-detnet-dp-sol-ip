@@ -1133,11 +1133,6 @@ DetNet                    |L2/SbN|          |L2/SbN|
 
     <section anchor="mapping-tsn" title="Mapping IP DetNet Flows to IEEE 802.1 TSN">
       <t>
-        [Editor's note: This section is TBD - it covers how IP DetNet flows operate
-        over an IEEE 802.1 TSN sub-network. BV to take a pass at filling in this section]
-      </t>
-
-      <t>
         This section covers how IP DetNet flows operate over an IEEE 802.1 TSN
         sub-network.  <xref target="fig_ip_detnet_to_tsn"/> illustrates such a
         scenario, where two IP (DetNet) nodes are interconnected by a TSN
@@ -1178,39 +1173,6 @@ DetNet                    |L2/SbN|          |L2/SbN|
           TSN/DetNet QoS for that packet.  It also may need additional marking, such as the
           priority field of an IEEE Std 802.1Q VLAN tag, to give the packet proper service.
           </t>
-          <!--          <t>
-           Although the flow identification methods described in <xref
-           target="IEEE8021CB">IEEE 802.1CB</xref> are flexible, and in fact,
-           include IP 6-tuple identification methods, the baseline TSN standards
-           assume that every Ethernet frame belonging to a TSN stream (i.e.
-           DetNet flow) carries a multicast destination MAC address that is
-           unique to that flow within the bridged network over which it is
-           carried.  Furthermore, <xref target="IEEE8021CB">IEEE 802.1CB</xref>
-           describes three methods by which a packet sequence number can be
-           encoded in an Ethernet frame.
-
-                   TEXT need adjustment, DELETE
-
-                   Extract from .1CB Introduction:
-                   ... TSN supports unicast and multicast Streams of packets ...
-
-                   The only Sequence encode/decode format specified as required, separately from
-                   any Stream identification function, is the Redundancy tag (R-TAG, 7.8). In
-                   addition, two optional formats (7.9, 7.10) are defined.
-
-          </t>
-          <t>
-           Ensuring that the proper Ethernet VLAN tag priority and destination
-           MAC address are used on a DetNet/TSN packet may require further
-           clarification of the customary L2/L3 transformations carried out by
-           routers and edge label switches.  Edge nodes may also have to move
-           sequence number fields among Layer 2, PW, and IPv6 encapsulations.
-
-                   TEXT need adjustment, DELETE
-                   No PW, no edge label switches to be covered here.
-
-        </t>
-          -->
           <t>
             TSN capabilities of the TSN sub-network are made available for IP
             (DetNet) flows via the protocol interworking function defined in
@@ -1325,9 +1287,8 @@ DetNet                    |L2/SbN|          |L2/SbN|
             <figure align="center" anchor="fig_ip_with_tsn"
                     title="IP (DetNet) node with TSN functions">
               <artwork><![CDATA[
-
-                IP (DetNet)
-                                  Node-2
+               IP (DetNet)
+                  Node-2
    <---------------------------------->
 
    ...........
@@ -1384,7 +1345,44 @@ DetNet                    |L2/SbN|          |L2/SbN|
           <section title="Procedures">
             <t>
               [Editor's note: This section is TBD - covers required
-              behavior of DetNet node using a TSN underlay.]
+              behavior of a TSN-aware DetNet node using a TSN underlay.]
+            </t>
+            <t>
+			  This section provides DetNet IP data plane procedures to interwork with a 
+			  TSN underlay sub-network when the IP (DetNet) node acts as a TSN-aware 
+			  Talker or Listener (see <xref target="fig_ip_with_tsn"/>). These procedures 
+			  have been divided into the following areas: flow identification, mapping of
+			  a DetNet flow to a TSN Stream and ensure proper TSN encapsulation. 
+            </t>
+            <t>
+			  Flow identification procedures are described in <xref target="ip-flow-id"/>.
+			  A TSN-aware IP (DetNet) node SHALL support the Stream Identification TSN 
+			  components as per <xref target="IEEE8021CB">IEEE 802.1CB</xref>.
+            </t>
+            <t>
+			  Implementations of this document SHALL use management and control information 
+			  to map a DetNet flow to a TSN Stream. N:1 mapping (aggregating DetNet flows 
+			  in a single TSN Stream) SHALL be supported. The management or control function
+			  that provisions flow mapping SHALL ensure that adequate resources are allocated 
+			  and configured to provide proper service requirements of the mapped flows.
+            </t>
+            <t>
+			  For proper TSN encapsulation implementations of this document SHALL support 
+			  active Stream Identification function as defined in chapter 6.6 in 
+			  <xref target="IEEE8021CB">IEEE 802.1CB</xref>. 
+            </t>
+            <t>
+			  A TSN-aware IP (DetNet) node SHALL support Ethernet encapsulation with 
+			  Redundancy tag (R-TAG) as per chapter 7.8 in <xref target="IEEE8021CB">IEEE 802.1CB</xref>. 
+            </t>
+            <t>
+			  Depending whether FRER functions are used in the TSN sub-network to serve the 
+			  mapped TSN Stream, a TSN-aware IP (DetNet) node SHALL support Sequencing function 
+			  and Sequence encode/decode function as per chapter 7.4 and 7.6 in 
+			  <xref target="IEEE8021CB">IEEE 802.1CB</xref>. Furthermore when a TSN-aware IP (DetNet)
+			  node acting as a replication or elimination point for FRER it SHALL implement 
+			  the Stream splitting function and the Individual recovery function as per chapter 7.7 
+			  and 7.5 in <xref target="IEEE8021CB">IEEE 802.1CB</xref>.
             </t>
           </section>
           <section title="Management and Control Implications">
@@ -1394,6 +1392,51 @@ DetNet                    |L2/SbN|          |L2/SbN|
               parameters and,when needed, configuration of FRER. Supported
               by management/control plane.]
             </t>
+            <t>
+			  DetNet flow and TSN Stream mapping related information are required only 
+			  for TSN-aware IP (DetNet) nodes. From the Data Plane perspective there is 
+			  no practical difference based on the origin of flow mapping related information 
+			  (management plane or control plane). 
+            </t>
+            <t>
+			  TSN-aware IP DetNet nodes are member of both the DetNet domain and the TSN sub-network.
+			  Within the TSN sub-network the TSN-aware IP (DetNet) node has a TSM-aware Talker/Listener role, 
+			  so TSN specific management and control plane functionalities must be implemented.
+			  There are many similarities in the management plane techniques used in DetNet and TSN, but
+			  that is not the case for the control plane protocols. For example, RSVP-TE and MSRP behaves 
+			  differently. Therefore management and control plane design is an important aspect of scenarios,
+			  where mapping between DetNet and TSN is required. 
+			</t>
+			<t>
+			  In order to use a TSN sub-network between DetNet nodes, DetNet specific information must be converted to 
+			  TSN sub-network specific ones. DetNet flow ID and flow related parameters/requirements must be converted to
+			  a TSN Stream ID and stream related parameters/requirements. Note that, as the TSN sub-network is just 
+			  a portion of the end2end DetNet path (i.e., single hop from IP perspective), some parameters (e.g., delay) 
+			  may differ significantly. Other parameters (like bandwidth) also may have to be tuned due to the L2 encapsulation
+			  used in the TSN sub-network.
+			</t>
+			<t>
+			  In some case it may be challenging to determine some TSN Stream related information. For example on a 
+			  TSN-aware IP (DetNet) node that acts as a Talker, it is quite obvious which DetNet node is the Listener 
+			  of the mapped TSN stream (i.e., the IP Next-Hop). However it may be not trivial to locate the point/interface 
+			  where that Listener is connected to the TSN sub-network. Such attributes may require interaction between 
+			  control and management plane functions and between DetNet and TSN domains.
+			</t>
+            <t>
+			  Mapping between DetNet flow identifiers and TSN Stream identifiers, if not provided explicitly, 
+			  can be done by a TSN-aware IP (DetNet) node locally based on information provided for configuration of 
+			  the TSN Stream identification functions (IP Stream identification and active Stream identification 
+			  function).
+			</t>
+			<t>
+			  Triggering the setup/modification of a TSN Stream in the TSN sub-network is an example where management and/or control plane
+			  interactions are required between the DetNet and TSN sub-network. TSN-unaware IP (DetNet) nodes make such a 
+			  triggering even more complicated as they are fully unaware of the sub-network and run independently.
+			</t>
+			<t>
+			  Configuration of TSN specific functions (e.g., FRER) inside the TSN sub-network is a TSN specific decision and 
+			  may not be visible in the DetNet domain.  
+			</t>
           </section>
         </section>
 
