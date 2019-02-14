@@ -761,8 +761,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
 
     <section title="Management and control plane considerations" anchor="m-cp-considerations">
       <t>
-        [Editor's note: This section needs to be different for MPLS and
-        IP solutions. Most solutions are technology dependent.]
+        [Editor's note: This section to be updated.]
       </t>
       <t>
         While management plane and control plane are traditionally
@@ -924,7 +923,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
               when processing IPv6 packets. An implementation MUST
               support flow identification based based the next protocol
               values defined in <xref target="nxt-proto"/>.  Other,
-              non-zero values, SHOULD be used for flow identification.
+              non-zero values, MUST be used for flow identification.
               Implementations SHOULD allow for these fields to be
               ignored for a specific DetNet flow.
             </t>
@@ -946,11 +945,6 @@ DetNet                    |L2/SbN|          |L2/SbN|
           </section>
           <section title="IPv6 Flow Label Field">
             <t>
-              [Authors note: the use of the IPv6 flow label is TBD this
-              section requires discussion. Flow label based mapping requires 
-			  src/dst adress mapping as well.]
-            </t>
-            <t>
               Implementations of this document SHOULD support
               identification of DetNet flows based on the IPv6 Flow
               Label field. Implementations that support matching based
@@ -970,11 +964,6 @@ DetNet                    |L2/SbN|          |L2/SbN|
             section. Support for TCP, UDP and IPsec flows are defined.
             Future documents are expected to define support for other
             protocols.
-          </t>
-          <t>
-            [Authors note: Other candidate protocols include
-            IP in IP, GRE, DCCP - should and of these be required
-            supported?]
           </t>
           <section title="TCP and UDP">
             <t>
@@ -1132,6 +1121,10 @@ DetNet                    |L2/SbN|          |L2/SbN|
     <!-- ===================================================================== -->
 
     <section anchor="mapping-tsn" title="Mapping IP DetNet Flows to IEEE 802.1 TSN">
+      <t>
+        [Authors note: how do we handle control protocols such as
+         ICMP, IPsec, etc.]
+      </t>
       <t>
         This section covers how IP DetNet flows operate over an IEEE 802.1 TSN
         sub-network.  <xref target="fig_ip_detnet_to_tsn"/> illustrates such a
