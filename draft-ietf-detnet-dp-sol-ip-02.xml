@@ -76,12 +76,12 @@
       </t>
       <t>
         The DetNet Architecture decomposes the DetNet related data plane
-        functions into two layers: a service layer and a transport
+        functions into two layers: a service layer and a forwarding
         layer.  The service layer is used to provide DetNet service
-        protection and reordering. The transport layer is used to
+        protection and reordering. The forwarding layer is used to
         provides congestion protection (low loss, assured latency, and
         limited reordering). As no DetNet specific headers are added to
-        support IP DetNet flows, only the transport layer functions are
+        support IP DetNet flows, only the forwarding layer functions are
         supported using the IP DetNet defined by this document. Service
         protection can be provided on a per sub-net
         basis using technologies such as MPLS <xref
@@ -105,7 +105,7 @@
         <t>
           This document uses the terminology and concepts established in
           the DetNet architecture <xref
-          target="I-D.ietf-detnet-architecture"/> the reader is assumed
+          target="I-D.ietf-detnet-architecture"/> and the reader is assumed
           to be familiar with that document.
         </t>
       </section>
@@ -202,29 +202,29 @@
       <figure align="center" anchor="fig_ip_detnet_simple"
               title="A Simple DetNet (DN) Enabled IP Network">
         <artwork><![CDATA[
-IP  DetNet       Relay                        Relay       IP DetNet
-End System       Node                         Node        End System
+ IP  DetNet      Relay                        Relay       IP DetNet
+ End System      Node                         Node        End System
 
-+---------+                                               +---------+
-|  Appl.  |<--------------- End to End Service ---------->|  Appl.  |
-+---------+    ...........                  ...........   +---------+
-| Service |<---: Service :-- DetNet flow ---: Service :-->| Service |
-+---------+    +---------+                  +---------+   +---------+
-|Transport|    |Transport|                  |Transport|   |Transport|
-+-------.-+    +-.-----.-+                  +-.-----.-+   +---.-----+
-        :  Link  :      \       ,-----.      /     /  ,-----.  \
-        +........+       +-----[  Sub  ]----+      +-[  Sub  ]-+
-                               [Network]             [Network]
-                                `-----'               `-----'
++----------+                                             +----------+
+|   Appl.  |<------------ End to End Service ----------->|   Appl.  |
++----------+  ............                 ...........   +----------+
+| Service  |<-: Service  :-- DetNet flow --: Service  :->| Service  |
++----------+  +----------+                 +----------+  +----------+
+|Forwarding|  |Forwarding|                 |Forwarding|  |Forwarding|
++--------.-+  +-.------.-+                 +-.---.----+  +-------.--+
+         : Link :       \      ,-----.      /     \   ,-----.   /
+         +......+        +----[  Sub  ]----+       +-[  Sub  ]-+
+                              [Network]              [Network]
+                               `-----'                `-----'
 
-        |<--------------------- DetNet IP -------------------->|
+         |<--------------------- DetNet IP --------------------->|
                          ]]></artwork>
       </figure>
       <t>
         <xref target="fig_ip_detnet_simple"/> illustrates a DetNet enabled IP
         network.  The DetNet enabled end systems originate IP encapsulated
         traffic that is identified as DetNet flows, relay nodes understand the
-        transport requirements of the DetNet flow and ensure that node,
+        forwarding requirements of the DetNet flow and ensure that node,
         interface and sub-network resources are allocated to ensure DetNet
         service requirements. The dotted line around the Service component of
         the Relay Nodes indicates that the transit routers are DetNet service
@@ -242,24 +242,24 @@ End System       Node                         Node        End System
       <figure align="center" anchor="fig_ip_detnet"
               title="DetNet (DN) IP Over MPLS Network">
         <artwork><![CDATA[
-IP  DetNet       Relay          Transit       Relay       IP DetNet
-End System       Node            Node         Node        End System
+ IP  DetNet      Relay         Transit         Relay       IP DetNet
+ End System      Node           Node           Node        End System
 
-+---------+                                               +---------+
-|  Appl.  |<--------------- End to End Service ---------->|  Appl.  |
-+---------+    .....-----+                  +-----.....   +---------+
-| Service |<---: Service |-- DetNet flow ---| Service :-->| Service |
-|         |    :         |<- DN MPLS flow ->|         :   |         |
-+---------+    +---------+   +---------+    +---------+   +---------+
-|Transport|    |Trp| |Trp|   |Transport|    |Trp| |Trp|   |Transport|
-+-------.-+    +-.-+ +-.-+   +---.---.-+    +-.-+ +-.-+   +---.-----+
-        :  Link  :    /  ,-----.  \  :  Link  :    /  ,-----.  \
-        +........+    +-[  Sub  ]-+  +........+   +--[  Sub  ]--+
++----------+                                              +----------+
+|   Appl.  |<-------------- End to End Service ---------->|   Appl.  |
++----------+   .....-----+                  +-----.....   +----------+
+| Service  |<--: Service |-- DetNet flow ---| Service :-->| Service  |
+|          |   :         |<- DN MPLS flow ->|         :   |          |
++----------+   +---------+   +----------+   +---------+   +----------+
+|Forwarding|   |Fwd| |Fwd|   |Forwarding|   |Fwd| |Fwd|   |Forwarding|
++--------.-+   +-.-+ +-.-+   +---.----.-+   +-.-+ +-.-+   +----.-----+
+         :  Link :    /  ,-----.  \   :  Link :    /  ,-----.  \
+         +.......+    +-[  Sub  ]-+   +.......+   +--[  Sub  ]--+
                         [Network]                    [Network]
                          `-----'                      `-----'
 
-                      |<---- DetNet MPLS ---->|
-        |<--------------------- DetNet IP -------------------->|
+                       |<---- DetNet MPLS --->|
+         |<--------------------- DetNet IP ------------------->|
                          ]]></artwork>
       </figure>
       <t>
@@ -272,8 +272,8 @@ End System       Node            Node         Node        End System
         DetNet flows.  The relay nodes follow procedures defined in
         <xref target="I-D.ietf-detnet-dp-sol-mpls"/> to map each DetNet
         flow to MPLS LSPs. While not shown, relay nodes can provide
-        service layer functions such as PREOF over the MPLS transport
-        layer, and this is indicated by the solid line for the MPLS
+        service layer functions such as PREOF using DetNet over MPLS,
+        and this is indicated by the solid line for the MPLS
         facing portion of the Service component. Note that the Transit
         node is MPLS (TE) LSP aware and performs switching based on MPLS
         labels, and need not have any specific knowledge of the DetNet
@@ -285,18 +285,18 @@ End System       Node            Node         Node        End System
       <figure align="center" anchor="fig_non_detnet_ip"
               title="Non-DetNet aware IP end systems with IP DetNet Domain">
         <artwork><![CDATA[
-IP               Edge                        Edge         IP
-End System       Node                        Node         End System
+ IP              Edge                         Edge         IP
+ End System      Node                         Node         End System
 
-+---------+    +.........+                  +.........+   +---------+
-|  Appl.  |<---:Svc Proxy:-- E2E Service ---:Svc Proxy:-->|  Appl.  |
-+---------+    +.........+                  +.........+   +---------+
-|   IP    |<---:IP : :Svc:----- IP flow ----:Svc: :IP :-->|   IP    |
-+---------+    +---+ +---+                  +---+ +---+   +---------+
-|Transport|    |Trp| |Trp|                  |Trp| |Trp|   |Transport|
-+-------.-+    +-.-+ +-.-+                  +-.-+ +-.-+   +---.-----+
-        :  Link  :      \       ,-----.      /     /  ,-----.  \
-        +........+       +-----[  Sub  ]----+     +--[  Sub  ]--+
++----------+   +.........+                  +.........+   +----------+
+|   Appl.  |<--:Svc Proxy:-- E2E Service ---:Svc Proxy:-->|   Appl.  |
++----------+   +.........+                  +.........+   +----------+
+|    IP    |<--:IP : :Svc:----- IP flow ----:Svc: :IP :-->|    IP    |
++----------+   +---+ +---+                  +---+ +---+   +----------+
+|Forwarding|   |Fwd| |Fwd|                  |Fwd| |Fwd|   |Forwarding|
++--------.-+   +-.-+ +-.-+                  +-.-+ +-.-+   +---.------+
+         :  Link :      \       ,-----.      /     /  ,-----.  \
+         +.......+       +-----[  Sub  ]----+     +--[  Sub  ]--+
                                [Network]             [Network]
                                 `-----'               `-----'
 
@@ -407,7 +407,7 @@ End System       Node                        Node         End System
         <t>
           End systems need to ensure that DetNet service requirements are met
           when processing packets associated with a DetNet flow.  When
-          transporting packets, this means that packets are
+          forwarding packets, this means that packets are
           appropriately shaped on transmission and received appropriate traffic
           treatment on the connected sub-network, see <xref target="QoS"/> and
           <xref target="detrouting"/> for more details.  When receiving packets,
@@ -507,7 +507,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
               The DetNet Service Flow MUST be mapped to the link / sub-network
               specific resources using an underlying system specific
               means. This implies each DetNet aware node on path MUST look
-              into the transported DetNet Service Flow packet and utilize
+              into the forwarded DetNet Service Flow packet and utilize
               e.g., a 5- (or 6-) tuple to find out the required mapping within
               a node.
             </t>
@@ -710,7 +710,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
           independent for PW/MPLS and IP encapsulated DetNet flows.
         </t>
         <t>
-          DetNet flows transported via IP have more limited aggregation
+          DetNet flows forwarded via IP have more limited aggregation
           options, due to the available traffic flow identification fields of
           the IP solution.
 
@@ -1137,19 +1137,19 @@ DetNet                    |L2/SbN|          |L2/SbN|
 <figure align="center" anchor="fig_ip_detnet_to_tsn"
               title="DetNet (DN) Enabled IP Network over a TSN sub-network">
 <artwork><![CDATA[
-    IP (DetNet)                  IP (DetNet)
-      Node-1                       Node-2
+    IP (DetNet)                   IP (DetNet)
+      Node-1                        Node-2
 
-   ...........                  ...........
-<--: Service :-- DetNet flow ---: Service :-->
-   +---------+                  +---------+
-   |Transport|                  |Transport|
-   +-------.-+    <-TSN Str->   +-.-----.-+
-            \      ,-------.     /     /
-             +----[ TSN-Sub ]---+     /
-                  [ Network ]--------+
-                   `-------'
-<----------------- DetNet IP ---------------->
+   ............                  ............
+<--: Service  :-- DetNet flow ---: Service  :-->
+   +----------+                  +----------+
+   |Forwarding|                  |Forwarding|
+   +--------.-+    <-TSN Str->   +-.-----.--+
+             \      ,-------.     /     /
+              +----[ TSN-Sub ]---+     /
+                   [ Network ]--------+
+                    `-------'
+<----------------- DetNet IP ----------------->
 ]]></artwork>
       </figure>
 
@@ -1220,24 +1220,24 @@ DetNet                    |L2/SbN|          |L2/SbN|
             <figure align="center" anchor="fig_ip_without_tsn"
                     title="IP (DetNet) node without TSN functions">
               <artwork><![CDATA[
-    IP (DetNet)
-      Node-1
-   <--------->
+     IP (DetNet)
+       Node-1
+   <---------->
 
-   ...........
-<--: Service :-- DetNet flow ------------------
-   +---------+
-   |Transport|
-   +---------+    +---------------+
-   |   L2    |    | L2 Relay with |<--- TSN ----
-   |         |    | TSN function  |    Stream
-   +----.----+    +--.---------.--+
-         \__________/           \______
+   ............
+<--: Service  :-- DetNet flow ------------------
+   +----------+
+   |Forwarding|
+   +----------+    +---------------+
+   |    L2    |    | L2 Relay with |<--- TSN ----
+   |          |    | TSN function  |    Stream
+   +-----.----+    +--.---------.--+
+          \__________/           \______
 
-   TSN-unaware
-    Talker /          TSN-Bridge
-    Listener             Relay
-                <-------- TSN sub-network -------
+    TSN-unaware
+     Talker /          TSN-Bridge
+     Listener             Relay
+                 <-------- TSN sub-network -------
 ]]></artwork>
             </figure>
 
@@ -1284,21 +1284,21 @@ DetNet                    |L2/SbN|          |L2/SbN|
                   Node-2
    <---------------------------------->
 
-   ...........
-<--: Service :-- DetNet flow ------------------
-   +---------+
-   |Transport|
-   +---------+    +---------------+
-   |   L2    |    | L2 Relay with |<--- TSN ---
-   |         |    | TSN function  |    Stream
-   +----.----+    +--.------.---.-+
-         \__________/        \   \______
-                              \_________
-   TSN-unaware
-    Talker /          TSN-Bridge
-    Listener             Relay
-                                      <----- TSN Sub-network -----
-   <------ TSN-aware Tlk/Lstn ------->
+   ............
+<--: Service  :-- DetNet flow ------------------
+   +----------+
+   |Forwarding|
+   +----------+    +---------------+
+   |    L2    |    | L2 Relay with |<--- TSN ---
+   |          |    | TSN function  |    Stream
+   +-----.----+    +--.------.---.-+
+          \__________/        \   \______
+                               \_________
+    TSN-unaware
+     Talker /          TSN-Bridge
+     Listener             Relay
+                                       <----- TSN Sub-network -----
+   <------- TSN-aware Tlk/Lstn ------->
 ]]></artwork>
             </figure>
 
