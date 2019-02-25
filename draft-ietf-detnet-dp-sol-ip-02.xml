@@ -53,8 +53,8 @@
 
     <abstract>
       <t>
-        This document specifies Deterministic Networking data plane
-        operation for IP encapsulated user data.
+     This document specifies the Deterministic Networking data plane
+     when operating in an IP packet switched network.
       </t>
     </abstract>
   </front>
@@ -76,12 +76,12 @@
       </t>
       <t>
         The DetNet Architecture decomposes the DetNet related data plane
-        functions into two layers: a service layer and a forwarding
-        layer.  The service layer is used to provide DetNet service
-        protection and reordering. The forwarding layer is used to
+        functions into two sub-layers: a service sub-layer and a forwarding
+        sub-layer.  The service sub-layer is used to provide DetNet service
+        protection and reordering. The forwarding sub-layer is used to
         provides congestion protection (low loss, assured latency, and
         limited reordering). As no DetNet specific headers are added to
-        support IP DetNet flows, only the forwarding layer functions are
+        support IP DetNet flows, only the forwarding sub-layer functions are
         supported using the IP DetNet defined by this document. Service
         protection can be provided on a per sub-net
         basis using technologies such as MPLS <xref
@@ -105,8 +105,8 @@
         <t>
           This document uses the terminology and concepts established in
           the DetNet architecture <xref
-          target="I-D.ietf-detnet-architecture"/> and the reader is assumed
-          to be familiar with that document.
+          target="I-D.ietf-detnet-architecture"/>, and the reader is assumed
+          to be familiar with that document and its terminology.
         </t>
       </section>
 
@@ -228,7 +228,7 @@
         interface and sub-network resources are allocated to ensure DetNet
         service requirements. The dotted line around the Service component of
         the Relay Nodes indicates that the transit routers are DetNet service
-        aware but do not perform any DetNet service layer function, e.g., PREOF.
+        aware but do not perform any DetNet service sub-layer function, e.g., PREOF.
         IEEE 802.1 TSN is an example sub-network type which can provide support
         for DetNet flows and service.  The mapping of IP DetNet flows to TSN
         streams and TSN protection mechanisms is covered in <xref
@@ -272,7 +272,7 @@
         DetNet flows.  The relay nodes follow procedures defined in
         <xref target="I-D.ietf-detnet-dp-sol-mpls"/> to map each DetNet
         flow to MPLS LSPs. While not shown, relay nodes can provide
-        service layer functions such as PREOF using DetNet over MPLS,
+        service sub-layer functions such as PREOF using DetNet over MPLS,
         and this is indicated by the solid line for the MPLS
         facing portion of the Service component. Note that the Transit
         node is MPLS (TE) LSP aware and performs switching based on MPLS
@@ -353,7 +353,7 @@
           <t hangText="Explicit routes:">
             <vspace blankLines="1"/>
             Use of a specific path for a flow.  This limits
-            miss-ordering and can improve delivery of deterministic latency.
+            misordering and can improve delivery of deterministic latency.
           </t>
 
           <t hangText="Service protection:">
