@@ -770,16 +770,21 @@ DetNet                    |L2/SbN|          |L2/SbN|
     information provided by distributed control plane protocols, e.g., IGP routing protocols, or by centralized network
     management mechanisms, e.g., RestConf <xref target="RFC8040"/>,
     YANG <xref target="RFC7950"/>, and
-    the Path Computation Element Communication Protocol (PCEP) <xref
-    target="I-D.dhody-pce-pcep-extension-pce-controller-srv6"/> or any
+    the Path Computation Element Communication Protocol (PCEP)
+    <xref target="RFC8283"/> <xref target="I-D.ietf-teas-pce-native-ip"/> or any
     combination thereof. Specific considerations and requirements for the DetNet Controller Plane are discussed in <xref target="control-management-requirements"/>.
  </t>
-  <section title="Flow Identification and Routing">
+  <section title="Flow Identification and Aggregation">
    <t>
-[Editor's note - we may need additional text on resource allocation in this section.]
-   </t>
-   <t>
-   <xref target="sec_dt_dp"/> discusses the use of the IP "6-tuple" for flow identification, and <xref target="QoS"/> goes on to discuss how identified flows use specific QoS mechanisms for flow-specific traffic treatment, including path control and resource allocation. Explicit routes are used to ensure that packets are routed through the resources that have been reserved for them, and hence provide the DetNet application with the required service. A requirement for the DetNet Controller Plane will be the ability to assign a particular identified DetNet IP flow to a path through the DetNet domain that has been assigned the required nodal resources to provide the appropriate traffic treatment for the flow, and also to include particular links as a part of the path that are able to  support the DetNet flow, for example by using IEEE 802.1 TSN links (as discussed in <xref target="mapping-tsn"/>). Further considerations and requirements for the DetNet Controller Plane are discussed in <xref target="control-management-requirements"/>.
+   <xref target="sec_dt_dp"/> introduces the use of the IP "6-tuple" for flow identification, and <xref target="QoS"/> goes on to discuss how identified flows use specific QoS mechanisms for flow-specific traffic treatment, including path control and resource allocation. <xref target="ip-flow-id"/> contains detailed DetNet IP flow identification procedures. Flow identification will play an important role for the DetNet controller plane.
+ </t>
+     <t>
+      <xref target="aggregation"/> and <xref target="agg-con"/> discuss the use of flow aggregation in DetNet. Flow aggregation can be accomplished using any of the 6-tuple fields defined in <xref target="ip-flow-id"/>, using a DSCP identified traffic class or other mechanisms. It will be the responsibility of the DetNet controller plane to be able to properly provision the use of these aggregation mechanisms. These requirements are included in <xref target="control-management-requirements"/>.
+     </t>
+ </section>
+<section title="Explcit Routes">
+ <t>
+Explicit routes are used to ensure that packets are routed through the resources that have been reserved for them, and hence provide the DetNet application with the required service. A requirement for the DetNet Controller Plane will be the ability to assign a particular identified DetNet IP flow to a path through the DetNet domain that has been assigned the required nodal resources to provide the appropriate traffic treatment for the flow, and also to include particular links as a part of the path that are able to  support the DetNet flow, for example by using IEEE 802.1 TSN links (as discussed in <xref target="mapping-tsn"/>). Further considerations and requirements for the DetNet Controller Plane are discussed in <xref target="control-management-requirements"/>.
    </t>
    <t>
     Whether configuring, calculating and instantiating these routes is a
@@ -802,13 +807,8 @@ DetNet                    |L2/SbN|          |L2/SbN|
       allocation.
      </t>
     </list>
-   See <xref target="control-management-requirements"/> for further discussion of these alternatives.
+   See <xref target="control-management-requirements"/> for further discussion of these alternatives. In addition, <xref target="RFC2386"/> contains useful background information on QoS-based routing, and <xref target="RFC5575"/> discusses a specific mechanism used by BGP for traffic flow specification and policy-based routing.
    </t>
- </section>
- <section title="Packet Replication, Elimination, and Ordering (PREOF)">
-  <t>
-   As discussed in <xref target="mapping-tsn"/>, PREOF is not directly supported by the DetNet IP layer, but rather by directing DetNet packets through IEEE 802.1 TSN links, where PREOF is supported. The controller plane solution required for explicitly routing DetNet packets through IEEE 802.1 TSN links is outside the scope of this document.
-  </t>
  </section>
  <section title="Contention Loss and Jitter Reduction">
      <t>
@@ -820,6 +820,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
        controller plane. It will also be necessary to be able to control
        the required queuing mechanisms used to provide these functions
        along a flow's path through the network. See <xref
+       target="ip-svc"/> and <xref
        target="control-management-requirements"/> for further discussion
        of these requirements.
      </t>
@@ -863,13 +864,8 @@ DetNet                    |L2/SbN|          |L2/SbN|
     This is further discussed in <xref target="control-management-requirements"/>.
   </t>
  </section>
- <section title="Flow Aggregation Control">
-     <t>
-      <xref target="aggregation"/> discusses the use of flow aggregation in DetNet. It includes flow aggregation accomplished through the use of a DSCP identified traffic class or other mechanisms. It will be the responsibility of the DetNet controller plane to be able to properly provision the use of these mechanisms. These requirements are included in the next section.
-     </t>
- </section>
  <section anchor="control-management-requirements" title="DetNet
-                                                          Controller (Control and Management) Plane Requirements">
+Controller (Control and Management) Plane Requirements">
      <t>
          While the definition of controller plane for DetNet is out of the scope of this document, there are particular considerations and requirements for such that result from the unique characteristics of the DetNet architecture <xref target="I-D.ietf-detnet-architecture"/> and data plane as defined herein.
      </t>
@@ -1162,9 +1158,9 @@ DetNet                    |L2/SbN|          |L2/SbN|
         </t>
       </section>
 
-      <section title="Aggregation Considerations">
+      <section anchor="agg-con" title="Aggregation Considerations">
         <t>
-          The use of prefixes, wildcards, bimasks, and port ranges
+          The use of prefixes, wildcards, bitmasks, and port ranges
           allows a DetNet node to aggregate DetNet flows.  This
           aggregation can take place within a single node, when that
           node maintains state about both the aggregated and component
@@ -1629,7 +1625,9 @@ TBD.
     <references title="Informative references">
       <?rfc include="reference.RFC.1122"?>
       <?rfc include="reference.RFC.2205"?>
+      <?rfc include="reference.RFC.2386"?>
       <?rfc include="reference.RFC.3670"?>
+      <?rfc include="reference.RFC.5575"?>
       <?rfc include="reference.RFC.5777"?>
       <?rfc include="reference.RFC.5654"?>
       <?rfc include="reference.RFC.6434"?>
@@ -1638,11 +1636,12 @@ TBD.
       <?rfc include="reference.RFC.7950"?>
       <?rfc include="reference.RFC.8040"?>
       <?rfc include="reference.RFC.8169"?>
+      <?rfc include="reference.RFC.8283"?>
       <?rfc include="reference.I-D.ietf-detnet-architecture"?>
       <?rfc include="reference.I-D.ietf-detnet-dp-sol-mpls"?>
       <?rfc include="reference.I-D.ietf-detnet-flow-information-model"?>
       <?rfc include="reference.I-D.ietf-detnet-security"?>
-      <?rfc include="reference.I-D.dhody-pce-pcep-extension-pce-controller-srv6"?>
+      <?rfc include="reference.I-D.ietf-teas-pce-native-ip"?>
 
       <reference anchor='IEEE1588'>
         <front>
