@@ -779,7 +779,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
    <xref target="sec_dt_dp"/> introduces the use of the IP "6-tuple" for flow identification, and <xref target="QoS"/> goes on to discuss how identified flows use specific QoS mechanisms for flow-specific traffic treatment, including path control and resource allocation. <xref target="ip-flow-id"/> contains detailed DetNet IP flow identification procedures. Flow identification will play an important role for the DetNet controller plane.
  </t>
      <t>
-      <xref target="aggregation"/> and <xref target="agg-con"/> discuss the use of flow aggregation in DetNet. Flow aggregation can be accomplished using any of the 6-tuple fields defined in <xref target="ip-flow-id"/>, using a DSCP identified traffic class or other mechanisms. It will be the responsibility of the DetNet controller plane to be able to properly provision the use of these aggregation mechanisms. These requirements are included in <xref target="control-management-requirements"/>.
+      <xref target="aggregation"/> and <xref target="agg-con"/> discuss the use of flow aggregation in DetNet. Flow aggregation can be accomplished using any of the 6-tuple fields defined in <xref target="ip-flow-id"/>, using a DSCP identified traffic class or other field. It will be the responsibility of the DetNet controller plane to be able to properly provision the use of these aggregation mechanisms. These requirements are included in <xref target="control-management-requirements"/>.
      </t>
  </section>
 <section title="Explcit Routes">
