@@ -504,7 +504,7 @@ DetNet                    |L2/SbN|          |L2/SbN|
             </artwork></figure>
 
             <t>
-              The DetNet Service Flow ise mapped to the link / sub-network
+              The DetNet Service Flow is mapped to the link / sub-network
               specific resources using an underlying system specific
               means. This implies each DetNet aware node on path looks
               into the forwarded DetNet Service Flow packet and utilize
