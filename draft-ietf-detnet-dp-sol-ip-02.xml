@@ -942,7 +942,7 @@ Controller (Control and Management) Plane Requirements">
           identification when the implementation is acting as a
           DetNet end systems, a relay node or as an edge node.
         </t>
-        
+
         <section anchor="ip-hdr" title="IP Header Information">
           <t>
             Implementations of this document MUST support DetNet flow
@@ -1197,16 +1197,17 @@ Controller (Control and Management) Plane Requirements">
       <figure title="Example DetNet IP over MPLS Sub-Network Formats"
               anchor="fig_dn_ip_mpls_sn_ex">
         <artwork align="center"><![CDATA[
-           /->     +------+  +------+  +------+
-           |       |  X   |  |  X   |  |  X   |  IP App-Flow
-MPLS       |       +------+  +------+  +------+
-         <-+       |NProto|  |NProto|  |NProto|
-App-Flow   |       +------+  +------+  +------+
-           |       |  IP  |  |  IP  |  |  IP  |
+
+           /->     +------+  +------+  +------+              ^
+           |       |  X   |  |  X   |  |  X   | IP App-Flow  :
+           |       +------+  +------+  +------+              :
+MPLS     <-+       |NProto|  |NProto|  |NProto|              :(1)
+ App-Flow  |       +------+  +------+  +------+              :
+           |       |  IP  |  |  IP  |  |  IP  |              v
            \-> +---+======+--+======+--+======+-----+
-DetNet-MPLS        | d-CW |  | d-CW |  | d-CW |
-                   +------+  +------+  +------+
-                   |Labels|  |Labels|  |Labels|
+DetNet-MPLS        | d-CW |  | d-CW |  | d-CW |              ^
+                   +------+  +------+  +------+              :(2)
+                   |Labels|  |Labels|  |Labels|              v
                +---+======+--+======+--+======+-----+
 Sub-Network        |  L2  |  | TSN  |  | UDP  |
                    +------+  +------+  +------+
@@ -1214,17 +1215,19 @@ Sub-Network        |  L2  |  | TSN  |  | UDP  |
                                        +------+
                                        |  L2  |
                                        +------+
+    (1) DetNet IP Flow
+    (2) DetNet MPLS Flow
     ]]>
         </artwork>
       </figure>
       <t>
-        In the figure, IP App-Flow indicates the application flow
-        carried in by the DetNet IP data plane.  IP and NProto indicate
-        the fields described in <xref target="ip-hdr"/> and <xref
-        target="nxt-proto"/>, respectively.  MPLS App-Flow indicates
-        that an individual DetNet IP flow is mapped into an single app-flow
-        from the perspective of the DetNet MPLS data plane defined in
-        <xref target="I-D.ietf-detnet-dp-sol-mpls"/>.
+        In the figure, "IP App-Flow" indicates the payload carried by
+        the DetNet IP data plane.  "IP" and "NProto" indicate the fields
+        described in <xref target="ip-hdr"/> and <xref
+        target="nxt-proto"/>, respectively.  "MPLS App-Flow" indicates
+        that an individual DetNet IP flow is the payload from the
+        perspective of the DetNet MPLS data plane defined in <xref
+        target="I-D.ietf-detnet-dp-sol-mpls"/>.
       </t>
       <t>
         Per <xref target="I-D.ietf-detnet-dp-sol-mpls"/>, the DetNet
