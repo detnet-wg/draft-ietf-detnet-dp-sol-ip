@@ -17,6 +17,8 @@ REV	    := $(word 2, $(REVS))
 DRAFT_ROOT  := $(DRAFT:%-$(REV)=%)
 OLD          = $(ID_DIR)/$(DRAFT_ROOT)-$(PREV_REV)
 NEW          = $(ID_DIR)/$(DRAFT_ROOT)-$(REV)
+REPO	    := $(shell git remote get-url origin | sed 's/^.*github.com.//' | sed 's/.git$$//')
+MASTER	    := 
 
 TREES := $(MODELS:.yang=.tree)
 
@@ -50,6 +52,7 @@ vars:
 	@echo PREV_REV=$(PREV_REV)
 	@echo REV=$(REV)
 	@echo OLD=$(OLD)
+	@echo REPO=$(REPO)
 
 $(DRAFT)-diff.txt: $(DRAFT).txt 
 	@echo "Generating diff of $(OLD).txt and $(DRAFT).txt > $@..."
@@ -99,10 +102,13 @@ rmid:
 	@git rm  $(NEW).xml $(NEW).txt $(NEW).html
 
 travis: idnits
-	@cat $(DRAFT).txt
-	@if [ -f "$(OLD).txt" ] ; then \
-	    diff -bw "$(OLD).txt" $(DRAFT).txt || true ;\
+	@rm -f "$(DRAFT)-master.txt"
+	@wget "https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?url=https://raw.githubusercontent.com/$(REPO)/master/$(DRAFT).xml" -O $(DRAFT)-master.txt || true
+	@if [ -f "$(DRAFT)-master.txt" ] ; then \
+	    echo "Generating diff against master:" ;\
+	    diff -bw "$(DRAFT)-master.txt" $(DRAFT).txt || true ;\
 	fi
+	cat $(DRAFT).txt
 
 #end
 
