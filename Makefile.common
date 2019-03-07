@@ -101,13 +101,15 @@ rmid:
 	@rm -f $(NEW).xml $(NEW).txt $(NEW).html
 	@git rm  $(NEW).xml $(NEW).txt $(NEW).html
 
-travis: idnits
-	@rm -f "$(DRAFT)-master.txt"
-	@wget "https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?url=https://raw.githubusercontent.com/$(REPO)/master/$(DRAFT).xml" -O $(DRAFT)-master.txt || true
-	@if [ -f "$(DRAFT)-master.txt" ] ; then \
+diff: $(DRAFT).raw
+	@rm -f "$(DRAFT)-master.raw"
+	@wget "https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc.cgi?url=https://raw.githubusercontent.com/$(REPO)/master/$(DRAFT).xml&format=ascii&mode=unpg" -O $(DRAFT)-master.raw || true
+	@if [ -f "$(DRAFT)-master.raw" ] ; then \
 	    echo "Generating diff against master:" ;\
-	    diff -bw "$(DRAFT)-master.txt" $(DRAFT).txt || true ;\
+	    diff -bw "$(DRAFT)-master.raw" $(DRAFT).raw || true ;\
 	fi
+
+travis: idnits diff
 	cat $(DRAFT).txt
 
 #end
