@@ -1371,6 +1371,11 @@ System  |   +--------+       +--------+       +--------+   |  System
     ]]></artwork>
         </figure>
 
+	<t>
+	[Editor's note: Text below in this sub-section is rather DetNet MPLS 
+	related, therefore candidate to be deleted in future versions.]
+	</t>
+
         <figure align="center" anchor="fig_ip_mpls_detnet"
                 title="Non-DetNet Aware IP Over DetNet MPLS Network">
           <artwork><![CDATA[
@@ -1442,6 +1447,12 @@ System  |    +--------+       +--------+       +--------+   | System
     DFx = DetNet member flow x over a TE LSP
     ]]></artwork>
         </figure>
+
+	<t>
+	[Editor's note: End of text being rather DetNet MPLS related.]
+	</t>
+
+
       </section>
 
       <section anchor="iom-overview"
@@ -1651,6 +1662,14 @@ Sub-Network        |  L2  |  | TSN  |  | UDP  |
               to use a particular {MAC-address, VLAN} pair to match the Stream
               in the TSN sub-network.
             </t>
+
+            <t>
+              [Editor's note: there are no requirement on IP DetNet nodes
+			  in case of "IP (DetNet) node without TSN functions" scenarios. 
+			  Paragraph and figure beow are candidates to be deleted in future 
+			  versions.]
+            </t>
+
             <t>
               From the TSN sub-network perspective DetNet IP nodes without any
               TSN functions can be treated as TSN-unaware Talker or Listener.
